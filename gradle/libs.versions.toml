@@ -1,0 +1,23 @@
+[versions]
+springframework-boot = "3.5.0"
+dependency-management = "1.1.7"
+spotless = "7.0.3"
+mybatis = "3.5.19"
+postgresql = "42.7.5"
+flyway = "10.18.0"
+flyway-core = "10.18.0"
+flyway-commandline = "10.18.0"
+flyway-database-postgresql = "10.18.0"
+
+[libraries]
+mybatis-spring-boot-starter = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-starter", version.ref = "mybatis" }
+postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
+flyway-core = { group = "org.flywaydb", name = "flyway-core", version.ref = "flyway-core" }
+flyway-commandline = { group = "org.flywaydb", name = "flyway-commandline", version.ref = "flyway-commandline" }
+flyway-database-postgresql = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway-database-postgresql" }
+
+[plugins]
+springframework-boot = { id = "org.springframework.boot", version.ref = "springframework-boot" }
+dependency-management = { id = "io.spring.dependency-management", version.ref = "dependency-management" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }

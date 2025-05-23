@@ -1,0 +1,62 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath libs.flyway.database.postgresql
+    }
+}
+
+plugins {
+    id 'java'
+    id 'application'
+    alias(libs.plugins.flyway)
+}
+
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://repo.flywaydb.org/repo"
+    }
+}
+
+dependencies {
+    implementation libs.flyway.commandline
+    implementation libs.flyway.core
+    implementation libs.postgresql
+}
+
+application {
+    mainClass = 'org.flywaydb.commandline.Main'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.flywaydb.commandline.Main'
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    zip64 = true
+}
+
+flyway {
+    url = 'jdbc:postgresql://localhost:15432/template'
+    user = 'myuser'
+    password = 'secret'
+    locations = [
+            "classpath:db/migration/schema",
+            "classpath:db/migration/data/${System.getenv('ENV') ?: 'dev'}"
+    ]
+}

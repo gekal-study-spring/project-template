@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: "Project Template"
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:15432/template
+    username: myuser
+    password: secret
+
+mybatis:
+  type-aliases-package: cn.gekal.spring.template.domain.model
+  mapper-locations: classpath:mybatis/mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true

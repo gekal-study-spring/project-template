@@ -1,0 +1,9 @@
+services:
+  postgres:
+    image: 'postgres:17-bullseye'
+    environment:
+      - 'POSTGRES_DB=template'
+      - 'POSTGRES_USER=myuser'
+      - 'POSTGRES_PASSWORD=secret'
+    ports:
+      - '15432:5432'

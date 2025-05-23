@@ -1,0 +1,4 @@
+rootProject.name = 'project-template'
+
+include "app"
+include "migration"
