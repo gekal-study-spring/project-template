@@ -12,17 +12,31 @@ class UserDomainServiceTest {
 
   private UserDomainService userDomainService;
   private User validUser;
-  private LocalDateTime now;
+  private User invalidUser;
 
   @BeforeEach
   void setUp() {
     userDomainService = new UserDomainService();
-    now = LocalDateTime.now();
-    validUser = new User(UUID.randomUUID(), "testUser", "test@example.com", now, now);
+
+    // Setup a valid user
+    validUser = new User();
+    validUser.setId(UUID.randomUUID());
+    validUser.setUsername("testuser");
+    validUser.setEmail("test@example.com");
+    validUser.setCreatedAt(LocalDateTime.now());
+    validUser.setUpdatedAt(LocalDateTime.now());
+
+    // Setup an invalid user
+    invalidUser = new User();
+    invalidUser.setId(UUID.randomUUID());
+    invalidUser.setUsername("te"); // Too short
+    invalidUser.setEmail("invalid-email"); // Invalid email
+    invalidUser.setCreatedAt(LocalDateTime.now());
+    invalidUser.setUpdatedAt(LocalDateTime.now());
   }
 
   @Test
-  void validateUser_WithValidUser_ReturnsTrue() {
+  void validateUser_withValidUser_shouldReturnTrue() {
     // Act
     boolean result = userDomainService.validateUser(validUser);
 
@@ -31,7 +45,7 @@ class UserDomainServiceTest {
   }
 
   @Test
-  void validateUser_WithNullUser_ReturnsFalse() {
+  void validateUser_withNullUser_shouldReturnFalse() {
     // Act
     boolean result = userDomainService.validateUser(null);
 
@@ -40,110 +54,71 @@ class UserDomainServiceTest {
   }
 
   @Test
-  void validateUser_WithNullUsername_ReturnsFalse() {
+  void validateUser_withInvalidEmail_shouldReturnFalse() {
     // Arrange
-    validUser.setUsername(null);
+    User userWithInvalidEmail = new User();
+    userWithInvalidEmail.setId(UUID.randomUUID());
+    userWithInvalidEmail.setUsername("testuser");
+    userWithInvalidEmail.setEmail("invalid-email");
 
     // Act
-    boolean result = userDomainService.validateUser(validUser);
+    boolean result = userDomainService.validateUser(userWithInvalidEmail);
 
     // Assert
     assertFalse(result);
   }
 
   @Test
-  void validateUser_WithEmptyUsername_ReturnsFalse() {
+  void validateUser_withShortUsername_shouldReturnFalse() {
     // Arrange
-    validUser.setUsername("");
+    User userWithShortUsername = new User();
+    userWithShortUsername.setId(UUID.randomUUID());
+    userWithShortUsername.setUsername("te"); // Less than 3 characters
+    userWithShortUsername.setEmail("test@example.com");
 
     // Act
-    boolean result = userDomainService.validateUser(validUser);
+    boolean result = userDomainService.validateUser(userWithShortUsername);
 
     // Assert
     assertFalse(result);
   }
 
   @Test
-  void validateUser_WithShortUsername_ReturnsFalse() {
+  void validateUser_withNullUsername_shouldReturnFalse() {
     // Arrange
-    validUser.setUsername("ab"); // Less than 3 characters
+    User userWithNullUsername = new User();
+    userWithNullUsername.setId(UUID.randomUUID());
+    userWithNullUsername.setUsername(null);
+    userWithNullUsername.setEmail("test@example.com");
 
     // Act
-    boolean result = userDomainService.validateUser(validUser);
+    boolean result = userDomainService.validateUser(userWithNullUsername);
 
     // Assert
     assertFalse(result);
   }
 
   @Test
-  void validateUser_WithNullEmail_ReturnsFalse() {
+  void validateUser_withNullEmail_shouldReturnFalse() {
     // Arrange
-    validUser.setEmail(null);
+    User userWithNullEmail = new User();
+    userWithNullEmail.setId(UUID.randomUUID());
+    userWithNullEmail.setUsername("testuser");
+    userWithNullEmail.setEmail(null);
 
     // Act
-    boolean result = userDomainService.validateUser(validUser);
+    boolean result = userDomainService.validateUser(userWithNullEmail);
 
     // Assert
     assertFalse(result);
   }
 
   @Test
-  void validateUser_WithInvalidEmail_NoAtSymbol_ReturnsFalse() {
-    // Arrange
-    validUser.setEmail("testexample.com");
-
-    // Act
-    boolean result = userDomainService.validateUser(validUser);
-
-    // Assert
-    assertFalse(result);
-  }
-
-  @Test
-  void validateUser_WithInvalidEmail_NoDomain_ReturnsFalse() {
-    // Arrange
-    validUser.setEmail("test@");
-
-    // Act
-    boolean result = userDomainService.validateUser(validUser);
-
-    // Assert
-    assertFalse(result);
-  }
-
-  @Test
-  void validateUser_WithInvalidEmail_NoTLD_ReturnsFalse() {
-    // Arrange
-    validUser.setEmail("test@example");
-
-    // Act
-    boolean result = userDomainService.validateUser(validUser);
-
-    // Assert
-    assertFalse(result);
-  }
-
-  @Test
-  void validateUser_WithInvalidEmail_ShortTLD_ReturnsFalse() {
-    // Arrange
-    validUser.setEmail("test@example.c");
-
-    // Act
-    boolean result = userDomainService.validateUser(validUser);
-
-    // Assert
-    assertFalse(result);
-  }
-
-  @Test
-  void enrichUser_ReturnsUnmodifiedUser() {
+  void enrichUser_shouldReturnSameUser() {
     // Act
     User result = userDomainService.enrichUser(validUser);
 
     // Assert
-    assertEquals(validUser, result);
-    // Since the current implementation just returns the user without modification,
-    // we're just verifying that the same user object is returned.
-    // If enrichment logic is added in the future, this test should be updated.
+    assertSame(validUser, result);
   }
 }

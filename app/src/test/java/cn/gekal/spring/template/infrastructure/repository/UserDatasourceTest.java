@@ -12,119 +12,125 @@ import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class UserDatasourceTest {
 
   @Mock private UserMapper userMapper;
 
   @InjectMocks private UserDatasource userDatasource;
 
-  private UUID userId;
-  private User user;
+  private User testUser;
+  private UUID testId;
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.openMocks(this);
-
-    userId = UUID.randomUUID();
-    LocalDateTime now = LocalDateTime.now();
-    user = new User(userId, "testUser", "test@example.com", now, now);
+    testId = UUID.randomUUID();
+    testUser = new User();
+    testUser.setId(testId);
+    testUser.setUsername("testuser");
+    testUser.setEmail("test@example.com");
+    testUser.setCreatedAt(LocalDateTime.now());
+    testUser.setUpdatedAt(LocalDateTime.now());
   }
 
   @Test
-  void findById_WhenUserExists_ReturnsUser() {
+  void findById_whenUserExists_shouldReturnUser() {
     // Arrange
-    when(userMapper.findById(userId)).thenReturn(user);
+    when(userMapper.findById(testId)).thenReturn(testUser);
 
     // Act
-    Optional<User> result = userDatasource.findById(userId);
+    Optional<User> result = userDatasource.findById(testId);
 
     // Assert
     assertTrue(result.isPresent());
-    assertEquals(userId, result.get().getId());
-    assertEquals("testUser", result.get().getUsername());
-    assertEquals("test@example.com", result.get().getEmail());
-    verify(userMapper).findById(userId);
+    assertEquals(testUser, result.get());
+    verify(userMapper).findById(testId);
   }
 
   @Test
-  void findById_WhenUserDoesNotExist_ReturnsEmptyOptional() {
+  void findById_whenUserDoesNotExist_shouldReturnEmpty() {
     // Arrange
-    when(userMapper.findById(userId)).thenReturn(null);
+    when(userMapper.findById(testId)).thenReturn(null);
 
     // Act
-    Optional<User> result = userDatasource.findById(userId);
+    Optional<User> result = userDatasource.findById(testId);
 
     // Assert
     assertFalse(result.isPresent());
-    verify(userMapper).findById(userId);
+    verify(userMapper).findById(testId);
   }
 
   @Test
-  void findAll_ReturnsAllUsers() {
+  void findAll_shouldReturnAllUsers() {
     // Arrange
-    List<User> users = Arrays.asList(user);
+    User user1 = new User();
+    user1.setId(UUID.randomUUID());
+    user1.setUsername("user1");
+    user1.setEmail("user1@example.com");
+
+    User user2 = new User();
+    user2.setId(UUID.randomUUID());
+    user2.setUsername("user2");
+    user2.setEmail("user2@example.com");
+
+    List<User> users = Arrays.asList(user1, user2);
     when(userMapper.findAll()).thenReturn(users);
 
     // Act
     List<User> result = userDatasource.findAll();
 
     // Assert
-    assertEquals(1, result.size());
-    assertEquals(userId, result.get(0).getId());
-    assertEquals("testUser", result.get(0).getUsername());
-    assertEquals("test@example.com", result.get(0).getEmail());
+    assertEquals(2, result.size());
+    assertEquals(users, result);
     verify(userMapper).findAll();
   }
 
   @Test
-  void save_WhenUserDoesNotExist_InsertsUser() {
+  void save_whenUserDoesNotExist_shouldInsertAndReturnUser() {
     // Arrange
-    when(userMapper.findById(userId)).thenReturn(null);
-    when(userMapper.insert(user)).thenReturn(1);
+    when(userMapper.findById(testId)).thenReturn(null);
+    when(userMapper.insert(testUser)).thenReturn(1);
 
     // Act
-    User result = userDatasource.save(user);
+    User result = userDatasource.save(testUser);
 
     // Assert
-    assertEquals(userId, result.getId());
-    assertEquals("testUser", result.getUsername());
-    assertEquals("test@example.com", result.getEmail());
-    verify(userMapper).findById(userId);
-    verify(userMapper).insert(user);
+    assertEquals(testUser, result);
+    verify(userMapper).findById(testId);
+    verify(userMapper).insert(testUser);
     verify(userMapper, never()).update(any(User.class));
   }
 
   @Test
-  void save_WhenUserExists_UpdatesUser() {
+  void save_whenUserExists_shouldUpdateAndReturnUser() {
     // Arrange
-    when(userMapper.findById(userId)).thenReturn(user);
-    when(userMapper.update(user)).thenReturn(1);
+    when(userMapper.findById(testId)).thenReturn(testUser);
+    when(userMapper.update(testUser)).thenReturn(1);
 
     // Act
-    User result = userDatasource.save(user);
+    User result = userDatasource.save(testUser);
 
     // Assert
-    assertEquals(userId, result.getId());
-    assertEquals("testUser", result.getUsername());
-    assertEquals("test@example.com", result.getEmail());
-    verify(userMapper).findById(userId);
+    assertEquals(testUser, result);
+    verify(userMapper).findById(testId);
     verify(userMapper, never()).insert(any(User.class));
-    verify(userMapper).update(user);
+    verify(userMapper).update(testUser);
   }
 
   @Test
-  void deleteById_DeletesUser() {
+  void deleteById_shouldCallMapperDeleteById() {
     // Arrange
-    when(userMapper.deleteById(userId)).thenReturn(1);
+    when(userMapper.deleteById(testId)).thenReturn(1);
 
     // Act
-    userDatasource.deleteById(userId);
+    userDatasource.deleteById(testId);
 
     // Assert
-    verify(userMapper).deleteById(userId);
+    verify(userMapper).deleteById(testId);
   }
 }
