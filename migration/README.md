@@ -5,3 +5,14 @@
 ```shell
 ./gradlew clean migration:jar migration:flywayMigrate
 ```
+
+```shell
+./gradlew migration:clean migration:bootJar
+
+java -jar migration/build/libs/migration-0.0.1-SNAPSHOT.jar  \
+  -url=jdbc:postgresql://localhost:15432/template \
+  -user=myuser \
+  -password=secret \
+  -locations=classpath:db/migration/schema,classpath:db/migration/data/dev \
+  migrate
+```
