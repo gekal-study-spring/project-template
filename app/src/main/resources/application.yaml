@@ -10,6 +10,7 @@ spring:
 
 mybatis:
   type-aliases-package: cn.gekal.spring.template.domain.model
+  type-handlers-package: cn.gekal.spring.template.infrastructure.config
   mapper-locations: classpath:mybatis/mapper/**/*.xml
   configuration:
     map-underscore-to-camel-case: true
