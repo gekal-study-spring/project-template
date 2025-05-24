@@ -5,7 +5,7 @@
 <mapper namespace="cn.gekal.spring.template.infrastructure.repository.mapper.UserMapper">
 
   <resultMap id="UserResultMap" type="cn.gekal.spring.template.domain.model.User">
-    <id property="id" column="id" javaType="java.util.UUID" jdbcType="BIGINT" typeHandler="cn.gekal.spring.template.infrastructure.config.UUIDTypeHandler"/>
+    <id property="id" column="id" javaType="java.util.UUID" jdbcType="OTHER" typeHandler="cn.gekal.spring.template.infrastructure.config.UUIDTypeHandler"/>
     <result property="username" column="name"/>
     <result property="email" column="email"/>
     <result property="createdAt" column="created_at"/>
@@ -15,7 +15,7 @@
   <select id="findById" resultMap="UserResultMap">
     SELECT id, name, email, created_at, updated_at
     FROM example.users
-    WHERE id = #{id,javaType=java.util.UUID,jdbcType=BIGINT,typeHandler=cn.gekal.spring.template.infrastructure.config.UUIDTypeHandler}
+    WHERE id = #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=cn.gekal.spring.template.infrastructure.config.UUIDTypeHandler}
   </select>
 
   <select id="findAll" resultMap="UserResultMap">
@@ -26,7 +26,7 @@
   <insert id="insert" parameterType="cn.gekal.spring.template.domain.model.User">
     INSERT INTO example.users (id, name, email, password, created_at, updated_at)
     VALUES (
-      #{id,javaType=java.util.UUID,jdbcType=BIGINT,typeHandler=cn.gekal.spring.template.infrastructure.config.UUIDTypeHandler},
+      #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=cn.gekal.spring.template.infrastructure.config.UUIDTypeHandler},
       #{username},
       #{email},
       'default_password', <!-- Password field is required but not in the User model -->
@@ -40,11 +40,11 @@
     SET name = #{username},
         email = #{email},
         updated_at = #{updatedAt}
-    WHERE id = #{id,javaType=java.util.UUID,jdbcType=BIGINT,typeHandler=cn.gekal.spring.template.infrastructure.config.UUIDTypeHandler}
+    WHERE id = #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=cn.gekal.spring.template.infrastructure.config.UUIDTypeHandler}
   </update>
 
   <delete id="deleteById">
     DELETE FROM example.users
-    WHERE id = #{id,javaType=java.util.UUID,jdbcType=BIGINT,typeHandler=cn.gekal.spring.template.infrastructure.config.UUIDTypeHandler}
+    WHERE id = #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=cn.gekal.spring.template.infrastructure.config.UUIDTypeHandler}
   </delete>
 </mapper>
