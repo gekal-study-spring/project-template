@@ -1,0 +1,35 @@
+
+@host = http://localhost:8080
+
+### Get all users
+GET {{ host }}/api/users
+Accept: application/json
+
+### Create new user
+# @name new
+POST {{ host }}/api/users
+Content-Type: application/json
+
+{
+  "username": "testUser",
+  "email": "testUser@example.com"
+}
+
+### Extract user ID
+@userId = {{new.response.body.id}}
+
+### Get user by ID
+GET {{ host }}/api/users/{{userId}}
+Accept: application/json
+
+### Update user
+PUT {{ host }}/api/users/{{userId}}
+Content-Type: application/json
+
+{
+  "username": "updatedUser",
+  "email": "updated@example.com"
+}
+
+### Delete user
+DELETE {{ host }}/api/users/{{userId}}
