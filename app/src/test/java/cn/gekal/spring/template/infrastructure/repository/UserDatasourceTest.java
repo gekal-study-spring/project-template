@@ -16,22 +16,21 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-class MyBatisUserRepositoryTest {
+class UserDatasourceTest {
 
   @Mock private UserMapper userMapper;
 
-  @InjectMocks private MyBatisUserRepository myBatisUserRepository;
+  @InjectMocks private UserDatasource userDatasource;
 
   private UUID userId;
   private User user;
-  private LocalDateTime now;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
 
     userId = UUID.randomUUID();
-    now = LocalDateTime.now();
+    LocalDateTime now = LocalDateTime.now();
     user = new User(userId, "testUser", "test@example.com", now, now);
   }
 
@@ -41,7 +40,7 @@ class MyBatisUserRepositoryTest {
     when(userMapper.findById(userId)).thenReturn(user);
 
     // Act
-    Optional<User> result = myBatisUserRepository.findById(userId);
+    Optional<User> result = userDatasource.findById(userId);
 
     // Assert
     assertTrue(result.isPresent());
@@ -57,7 +56,7 @@ class MyBatisUserRepositoryTest {
     when(userMapper.findById(userId)).thenReturn(null);
 
     // Act
-    Optional<User> result = myBatisUserRepository.findById(userId);
+    Optional<User> result = userDatasource.findById(userId);
 
     // Assert
     assertFalse(result.isPresent());
@@ -71,7 +70,7 @@ class MyBatisUserRepositoryTest {
     when(userMapper.findAll()).thenReturn(users);
 
     // Act
-    List<User> result = myBatisUserRepository.findAll();
+    List<User> result = userDatasource.findAll();
 
     // Assert
     assertEquals(1, result.size());
@@ -88,7 +87,7 @@ class MyBatisUserRepositoryTest {
     when(userMapper.insert(user)).thenReturn(1);
 
     // Act
-    User result = myBatisUserRepository.save(user);
+    User result = userDatasource.save(user);
 
     // Assert
     assertEquals(userId, result.getId());
@@ -106,7 +105,7 @@ class MyBatisUserRepositoryTest {
     when(userMapper.update(user)).thenReturn(1);
 
     // Act
-    User result = myBatisUserRepository.save(user);
+    User result = userDatasource.save(user);
 
     // Assert
     assertEquals(userId, result.getId());
@@ -123,7 +122,7 @@ class MyBatisUserRepositoryTest {
     when(userMapper.deleteById(userId)).thenReturn(1);
 
     // Act
-    myBatisUserRepository.deleteById(userId);
+    userDatasource.deleteById(userId);
 
     // Assert
     verify(userMapper).deleteById(userId);

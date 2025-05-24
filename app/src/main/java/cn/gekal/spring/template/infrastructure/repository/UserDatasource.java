@@ -9,11 +9,11 @@ import java.util.UUID;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class MyBatisUserRepository implements UserRepository {
+public class UserDatasource implements UserRepository {
 
   private final UserMapper userMapper;
 
-  public MyBatisUserRepository(UserMapper userMapper) {
+  public UserDatasource(UserMapper userMapper) {
     this.userMapper = userMapper;
   }
 

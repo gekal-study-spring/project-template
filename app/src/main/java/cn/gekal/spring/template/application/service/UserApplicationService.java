@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserApplicationService {
@@ -31,6 +32,7 @@ public class UserApplicationService {
     return userRepository.findAll().stream().map(this::convertToDto).collect(Collectors.toList());
   }
 
+  @Transactional
   public UserDto createUser(UserDto userDto) {
     User user = convertToEntity(userDto);
     user.setId(UUID.randomUUID());
@@ -47,6 +49,7 @@ public class UserApplicationService {
     return convertToDto(savedUser);
   }
 
+  @Transactional
   public UserDto updateUser(UUID id, UserDto userDto) {
     User existingUser =
         userRepository
@@ -67,6 +70,7 @@ public class UserApplicationService {
     return convertToDto(savedUser);
   }
 
+  @Transactional
   public void deleteUser(UUID id) {
     if (userRepository.findById(id).isEmpty()) {
       throw new IllegalArgumentException("User not found");
