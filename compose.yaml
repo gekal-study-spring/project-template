@@ -11,3 +11,23 @@ services:
       - 'POSTGRES_PASSWORD=secret'
     ports:
       - '15432:5432'
+
+  app:
+    container_name: project-template-app
+    build:
+      dockerfile: Dockerfile
+      context: .
+    environment:
+      - 'ENV=dev'
+      - 'SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/template'
+      - 'SPRING_DATASOURCE_USERNAME=myuser'
+      - 'SPRING_DATASOURCE_PASSWORD=secret'
+    ports:
+      - '18080:8080'
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "--quiet", "http://localhost:8080/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
