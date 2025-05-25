@@ -1,24 +1,29 @@
-package cn.gekal.spring.template.presentation.api.dto;
+package cn.gekal.spring.template.presentation.api;
 
 import cn.gekal.spring.template.domain.model.User;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class UserResponse {
+public class UserRequest {
   private UUID id;
   private String username;
   private String email;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
 
-  public UserResponse() {}
+  public UserRequest() {}
 
-  public UserResponse(User user) {
-    this.id = user.getId();
-    this.username = user.getUsername();
-    this.email = user.getEmail();
-    this.createdAt = user.getCreatedAt();
-    this.updatedAt = user.getUpdatedAt();
+  public UserRequest(
+      UUID id, String username, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    this.id = id;
+    this.username = username;
+    this.email = email;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+  }
+
+  public User toUser() {
+    return new User(id, username, email, createdAt, updatedAt);
   }
 
   public UUID getId() {

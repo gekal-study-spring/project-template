@@ -1,60 +1,60 @@
 buildscript {
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath libs.flyway.database.postgresql
-	}
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath libs.flyway.database.postgresql
+    }
 }
 
 plugins {
-	id 'java'
-	id 'application'
-	alias(libs.plugins.springframework.boot)
-	alias(libs.plugins.flyway)
+    id 'java'
+    id 'application'
+    alias(libs.plugins.springframework.boot)
+    alias(libs.plugins.flyway)
 }
 
 version = '1.0.1'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation(libs.flyway.commandline) {
-		transitive false
-	}
-	implementation libs.jansi
-	implementation libs.jackson.dataformat.toml
-	implementation libs.jackson.dataformat.xml
+    implementation(libs.flyway.commandline) {
+        transitive false
+    }
+    implementation libs.jansi
+    implementation libs.jackson.dataformat.toml
+    implementation libs.jackson.dataformat.xml
 
-	implementation libs.flyway.core
+    implementation libs.flyway.core
 
-	implementation libs.flyway.database.postgresql
-	implementation libs.postgresql
+    implementation libs.flyway.database.postgresql
+    implementation libs.postgresql
 }
 
 bootJar {
-	launchScript()
-	mainClass = 'org.flywaydb.commandline.Main'
+    launchScript()
+    mainClass = 'org.flywaydb.commandline.Main'
 }
 
 application {
-	mainClass = 'org.flywaydb.commandline.Main'
+    mainClass = 'org.flywaydb.commandline.Main'
 }
 
 flyway {
-	url = 'jdbc:postgresql://localhost:15432/template'
-	user = 'myuser'
-	password = 'secret'
-	locations = [
-		"classpath:db/migration/schema",
-		"classpath:db/migration/data/${System.getenv('ENV') ?: 'dev'}"
-	]
+    url = 'jdbc:postgresql://localhost:15432/template'
+    user = 'myuser'
+    password = 'secret'
+    locations = [
+            "classpath:db/migration/schema",
+            "classpath:db/migration/data/${System.getenv('ENV') ?: 'dev'}"
+    ]
 }

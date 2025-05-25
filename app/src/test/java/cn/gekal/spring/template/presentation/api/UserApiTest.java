@@ -10,7 +10,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import cn.gekal.spring.template.application.service.UserService;
 import cn.gekal.spring.template.domain.model.User;
-import cn.gekal.spring.template.presentation.api.dto.UserRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import java.util.Arrays;

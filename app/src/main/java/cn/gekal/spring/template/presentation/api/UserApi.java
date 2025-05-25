@@ -2,8 +2,6 @@ package cn.gekal.spring.template.presentation.api;
 
 import cn.gekal.spring.template.application.service.UserService;
 import cn.gekal.spring.template.domain.model.User;
-import cn.gekal.spring.template.presentation.api.dto.UserRequest;
-import cn.gekal.spring.template.presentation.api.dto.UserResponse;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
