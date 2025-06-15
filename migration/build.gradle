@@ -10,11 +10,13 @@ buildscript {
 plugins {
     id 'java'
     id 'application'
-    alias(libs.plugins.springframework.boot)
+    alias(libs.plugins.shadow)
     alias(libs.plugins.flyway)
 }
 
 version = '1.0.1'
+
+mainClassName = 'org.flywaydb.commandline.Main'
 
 java {
     toolchain {
@@ -40,13 +42,11 @@ dependencies {
     implementation libs.postgresql
 }
 
-bootJar {
-    launchScript()
-    mainClass = 'org.flywaydb.commandline.Main'
-}
-
-application {
-    mainClass = 'org.flywaydb.commandline.Main'
+shadowJar {
+    mergeServiceFiles()
+    manifest {
+        attributes 'Main-Class': 'org.flywaydb.commandline.Main'
+    }
 }
 
 flyway {

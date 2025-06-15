@@ -1,4 +1,5 @@
 [versions]
+shadow = "8.1.1"
 springframework-boot = "3.5.0"
 dependency-management = "1.1.7"
 spotless = "7.0.3"
@@ -19,6 +20,7 @@ jackson-dataformat-xml = { group = "com.fasterxml.jackson.dataformat", name = "j
 flyway-database-postgresql = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }
 
 [plugins]
+shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
 springframework-boot = { id = "org.springframework.boot", version.ref = "springframework-boot" }
 dependency-management = { id = "io.spring.dependency-management", version.ref = "dependency-management" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
