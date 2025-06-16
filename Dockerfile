@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN ./gradlew clean bootJar --no-daemon
+RUN ./gradlew clean migration:shadowJar app:bootJar --no-daemon
 
 FROM eclipse-temurin:21-jdk
 

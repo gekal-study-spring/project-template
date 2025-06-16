@@ -1,6 +1,9 @@
 
 @host = http://localhost:8080
 
+### Actuator Health Check
+GET {{ host }}/actuator/health
+
 ### Get all users
 GET {{ host }}/api/users
 Accept: application/json
