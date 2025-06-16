@@ -34,4 +34,4 @@ java ${JAVA_OPTS} -jar ${MIGRATION_JAR}  \
   migrate
 
 echo "アプリケーションを起動中..."
-java ${JAVA_OPTS} -jar "${APP_JAR}" "$@"
+exec java ${JAVA_OPTS} -jar "${APP_JAR}" "$@"
