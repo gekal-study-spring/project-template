@@ -14,6 +14,11 @@ services:
     volumes:
       - ./database/initdb:/docker-entrypoint-initdb.d
       - db:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U myuser -d template" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   app:
     container_name: project-template-app
@@ -28,12 +33,8 @@ services:
     ports:
       - '18080:8080'
     depends_on:
-      - postgres
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "--quiet", "http://localhost:8080/"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      postgres:
+        condition: service_healthy
 
 volumes:
   db:
