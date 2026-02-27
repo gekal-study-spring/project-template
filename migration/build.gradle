@@ -16,7 +16,9 @@ plugins {
 
 version = '1.0.1'
 
-mainClassName = 'org.flywaydb.commandline.Main'
+application {
+    mainClass = 'org.flywaydb.commandline.Main'
+}
 
 java {
     toolchain {
@@ -30,7 +32,7 @@ repositories {
 
 dependencies {
     implementation(libs.flyway.commandline) {
-        transitive false
+        transitive = false
     }
     implementation libs.jansi
     implementation libs.jackson.dataformat.toml
