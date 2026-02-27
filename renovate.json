@@ -1,0 +1,44 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":semanticPrefixFix",
+    ":label(renovate)",
+    ":timezone(Asia/Tokyo)",
+    ":separateMajorReleases",
+    ":automergeMinor",
+    ":automergePatch",
+    ":automergeRequireAllStatusChecks",
+    ":prHourlyLimit10",
+    ":prConcurrentLimit20"
+  ],
+  "schedule": ["after 9am on monday"],
+  "rangeStrategy": "bump",
+  "postUpdateOptions": ["gradleDeprecatedResolution", "gradleUpdate"],
+  "packageRules": [
+    {
+      "matchManagers": ["gradle", "dockerfile", "github-actions"],
+      "groupName": "all non-major dependencies",
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "matchManagers": ["gradle"],
+      "matchPackageNames": [
+        "org.springframework.boot:spring-boot*",
+        "org.mybatis.spring.boot:mybatis-spring-boot-starter"
+      ],
+      "groupName": "spring stack",
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "dependencyDashboardApproval": true
+    }
+  ],
+  "osvVulnerabilityAlerts": true
+}
