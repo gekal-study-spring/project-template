@@ -1,27 +1,12 @@
 plugins {
     alias(libs.plugins.spotless) apply false
-    id 'org.openrewrite.rewrite' version '6.8.0' apply false
 }
 
 allprojects {
     apply plugin: 'com.diffplug.spotless'
-    apply plugin: 'org.openrewrite.rewrite'
 
     repositories {
         mavenCentral()
-    }
-
-    // OpenRewrite 設定
-    rewrite {
-        // デフォルトでは特定レシピを固定せず、必要時に下記のように有効化してください。
-        // activeRecipe 'org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_2'
-        // 例: フォーマット系のみを実行
-        // activeRecipe 'org.openrewrite.java.format.AutoFormat'
-    }
-
-    dependencies {
-        // Spring/Spring Boot 系の移行レシピ
-        rewrite 'org.openrewrite.recipe:rewrite-spring:5.4.0'
     }
 
     spotless {

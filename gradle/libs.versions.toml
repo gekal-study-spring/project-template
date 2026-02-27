@@ -1,15 +1,18 @@
 [versions]
+openrewrite = "7.27.0"
+rewrite-spring = "6.25.0"
 shadow = "8.1.1"
 springframework-boot = "3.5.0"
 dependency-management = "1.1.7"
 spotless = "7.0.3"
 mybatis = "3.0.4"
-postgresql = "42.7.5"
+postgresql = "42.7.7"
 flyway = "11.8.2"
 jansi = "1.18"
 jackson = "2.15.2"
 
 [libraries]
+rewrite-spring = { group = "org.openrewrite.recipe", name = "rewrite-spring", version.ref = "rewrite-spring" }
 mybatis-spring-boot-starter = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-starter", version.ref = "mybatis" }
 postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
 flyway-core = { group = "org.flywaydb", name = "flyway-core", version.ref = "flyway" }
@@ -20,6 +23,7 @@ jackson-dataformat-xml = { group = "com.fasterxml.jackson.dataformat", name = "j
 flyway-database-postgresql = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }
 
 [plugins]
+openrewrite = { id = "org.openrewrite.rewrite", version.ref = "openrewrite" }
 shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
 springframework-boot = { id = "org.springframework.boot", version.ref = "springframework-boot" }
 dependency-management = { id = "io.spring.dependency-management", version.ref = "dependency-management" }

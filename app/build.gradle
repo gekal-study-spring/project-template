@@ -2,6 +2,7 @@ plugins {
     id 'java'
     alias(libs.plugins.springframework.boot)
     alias(libs.plugins.dependency.management)
+    alias(libs.plugins.openrewrite)
 }
 
 group = 'cn.gekal.spring'
@@ -23,6 +24,10 @@ repositories {
     mavenCentral()
 }
 
+rewrite {
+    activeRecipe("org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_5")
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
@@ -30,6 +35,8 @@ dependencies {
     implementation libs.mybatis.spring.boot.starter
 
     runtimeOnly 'org.postgresql:postgresql'
+
+    rewrite libs.rewrite.spring
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
