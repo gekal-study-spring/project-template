@@ -9,16 +9,11 @@ buildscript {
 
 plugins {
     id 'java'
-    id 'application'
     alias(libs.plugins.shadow)
     alias(libs.plugins.flyway)
 }
 
 version = '1.0.1'
-
-application {
-    mainClass = 'org.flywaydb.commandline.Main'
-}
 
 java {
     toolchain {
