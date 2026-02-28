@@ -1,7 +1,7 @@
 [versions]
 openrewrite = "7.27.0"
 rewrite-spring = "6.25.0"
-shadow = "8.1.1"
+shadow = "8.3.0"
 springframework-boot = "4.0.2"
 dependency-management = "1.1.7"
 spotless = "8.2.1"
@@ -24,7 +24,7 @@ flyway-database-postgresql = { group = "org.flywaydb", name = "flyway-database-p
 
 [plugins]
 openrewrite = { id = "org.openrewrite.rewrite", version.ref = "openrewrite" }
-shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 springframework-boot = { id = "org.springframework.boot", version.ref = "springframework-boot" }
 dependency-management = { id = "io.spring.dependency-management", version.ref = "dependency-management" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
