@@ -2,14 +2,14 @@
 openrewrite = "7.27.0"
 rewrite-spring = "6.25.0"
 shadow = "8.1.1"
-springframework-boot = "3.5.0"
+springframework-boot = "4.0.2"
 dependency-management = "1.1.7"
-spotless = "7.0.3"
-mybatis = "3.0.4"
-postgresql = "42.7.7"
-flyway = "11.8.2"
-jansi = "1.18"
-jackson = "2.15.2"
+spotless = "8.2.1"
+mybatis = "3.5.19"
+postgresql = "42.7.10"
+flyway = "12.0.2"
+jansi = "2.4.2"
+jackson = "3.1.0"
 
 [libraries]
 rewrite-spring = { group = "org.openrewrite.recipe", name = "rewrite-spring", version.ref = "rewrite-spring" }
@@ -18,8 +18,8 @@ postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "pos
 flyway-core = { group = "org.flywaydb", name = "flyway-core", version.ref = "flyway" }
 flyway-commandline = { group = "org.flywaydb", name = "flyway-commandline", version.ref = "flyway" }
 jansi = { group = "org.fusesource.jansi", name = "jansi", version.ref = "jansi" }
-jackson-dataformat-toml = { group = "com.fasterxml.jackson.dataformat", name = "jackson-dataformat-toml", version.ref = "jackson" }
-jackson-dataformat-xml = { group = "com.fasterxml.jackson.dataformat", name = "jackson-dataformat-xml", version.ref = "jackson" }
+jackson-dataformat-toml = { group = "tools.jackson.dataformat", name = "jackson-dataformat-toml", version.ref = "jackson" }
+jackson-dataformat-xml = { group = "tools.jackson.dataformat", name = "jackson-dataformat-xml", version.ref = "jackson" }
 flyway-database-postgresql = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }
 
 [plugins]
