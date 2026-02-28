@@ -43,7 +43,11 @@ shadowJar {
     mergeServiceFiles()
     zip64 true
     manifest {
-        attributes 'Main-Class': 'org.flywaydb.commandline.Main'
+        attributes 'Main-Class': 'org.flywaydb.commandline.Main',
+                'Implementation-Title': 'Database Migration Runner', // 任意のわかりやすい名前に変更できます
+                'Implementation-Version': project.version,           // 上部で定義している '1.0.1' が自動で入ります
+                'Built-By': System.getProperty('user.name'),         // ビルドを実行したユーザー名
+                'Build-Jdk': System.getProperty('java.version')      // ビルドに使用したJavaのバージョン
     }
 }
 
