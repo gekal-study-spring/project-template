@@ -41,6 +41,7 @@ dependencies {
 
 shadowJar {
     mergeServiceFiles()
+    zip64 true
     manifest {
         attributes 'Main-Class': 'org.flywaydb.commandline.Main'
     }
