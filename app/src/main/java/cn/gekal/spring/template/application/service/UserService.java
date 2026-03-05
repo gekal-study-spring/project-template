@@ -4,11 +4,16 @@ import cn.gekal.spring.template.domain.model.User;
 import cn.gekal.spring.template.domain.model.UserNotFoundException;
 import cn.gekal.spring.template.domain.repository.UserRepository;
 import cn.gekal.spring.template.domain.service.UserDomainService;
+import java.sql.SQLTransientConnectionException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.dao.TransientDataAccessException;
+import org.springframework.resilience.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.CannotCreateTransactionException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -30,6 +35,22 @@ public class UserService {
     return userRepository.findAll();
   }
 
+  @Retryable(
+      includes = {
+        // DBへの接続が確立できない
+        DataAccessResourceFailureException.class,
+        // DB接続プール（HikariCPなど）から有効なコネクションを取得できなかったり、DBに接続できなかったりした場合
+        CannotCreateTransactionException.class,
+        // JDBC標準の例外で、一時的な接続エラー
+        SQLTransientConnectionException.class,
+        // DB内部の「一時的な競合」
+        TransientDataAccessException.class,
+      },
+      maxRetries = 3,
+      delay = 100,
+      jitter = 10,
+      multiplier = 2,
+      maxDelay = 1000)
   @Transactional
   public User createUser(User user) {
 
@@ -47,6 +68,22 @@ public class UserService {
     return savedUser;
   }
 
+  @Retryable(
+      includes = {
+        // DBへの接続が確立できない
+        DataAccessResourceFailureException.class,
+        // DB接続プール（HikariCPなど）から有効なコネクションを取得できなかったり、DBに接続できなかったりした場合
+        CannotCreateTransactionException.class,
+        // JDBC標準の例外で、一時的な接続エラー
+        SQLTransientConnectionException.class,
+        // DB内部の「一時的な競合」
+        TransientDataAccessException.class,
+      },
+      maxRetries = 3,
+      delay = 100,
+      jitter = 10,
+      multiplier = 2,
+      maxDelay = 1000)
   @Transactional
   public User updateUser(UUID id, User user) {
     User existingUser =
@@ -65,6 +102,22 @@ public class UserService {
     return userRepository.save(enrichedUser);
   }
 
+  @Retryable(
+      includes = {
+        // DBへの接続が確立できない
+        DataAccessResourceFailureException.class,
+        // DB接続プール（HikariCPなど）から有効なコネクションを取得できなかったり、DBに接続できなかったりした場合
+        CannotCreateTransactionException.class,
+        // JDBC標準の例外で、一時的な接続エラー
+        SQLTransientConnectionException.class,
+        // DB内部の「一時的な競合」
+        TransientDataAccessException.class,
+      },
+      maxRetries = 3,
+      delay = 100,
+      jitter = 10,
+      multiplier = 2,
+      maxDelay = 1000)
   @Transactional
   public void deleteUser(UUID id) {
     if (userRepository.findById(id).isEmpty()) {
