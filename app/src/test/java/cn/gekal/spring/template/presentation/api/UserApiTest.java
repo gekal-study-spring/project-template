@@ -1,5 +1,7 @@
 package cn.gekal.spring.template.presentation.api;
 
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -10,7 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import cn.gekal.spring.template.application.service.UserService;
 import cn.gekal.spring.template.domain.model.User;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +27,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 @ExtendWith(MockitoExtension.class)
 class UserApiTest {
@@ -47,7 +51,16 @@ class UserApiTest {
     mockMvc = MockMvcBuilders.standaloneSetup(userApi).build();
 
     // Initialize ObjectMapper
-    objectMapper = new ObjectMapper();
+    objectMapper =
+        JsonMapper.builder()
+            .changeDefaultVisibility(
+                visibilityChecker ->
+                    visibilityChecker
+                        .withVisibility(PropertyAccessor.FIELD, ANY)
+                        .withVisibility(PropertyAccessor.GETTER, NONE)
+                        .withVisibility(PropertyAccessor.SETTER, NONE)
+                        .withVisibility(PropertyAccessor.IS_GETTER, NONE))
+            .build();
 
     // Initialize test data
     testId = UUID.randomUUID();
