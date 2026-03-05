@@ -1,6 +1,7 @@
 package cn.gekal.spring.template.application.service;
 
 import cn.gekal.spring.template.domain.model.User;
+import cn.gekal.spring.template.domain.model.UserNotFoundException;
 import cn.gekal.spring.template.domain.repository.UserRepository;
 import cn.gekal.spring.template.domain.service.UserDomainService;
 import java.time.LocalDateTime;
@@ -49,16 +50,14 @@ public class UserService {
   @Transactional
   public User updateUser(UUID id, User user) {
     User existingUser =
-        userRepository
-            .findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
 
     existingUser.setUsername(user.getUsername());
     existingUser.setEmail(user.getEmail());
     existingUser.setUpdatedAt(LocalDateTime.now());
 
     if (!userDomainService.validateUser(existingUser)) {
-      throw new IllegalArgumentException("Invalid user data");
+      throw new UserNotFoundException("Invalid user data");
     }
 
     User enrichedUser = userDomainService.enrichUser(existingUser);
@@ -69,7 +68,7 @@ public class UserService {
   @Transactional
   public void deleteUser(UUID id) {
     if (userRepository.findById(id).isEmpty()) {
-      throw new IllegalArgumentException("User not found");
+      throw new UserNotFoundException("User not found");
     }
 
     userRepository.deleteById(id);

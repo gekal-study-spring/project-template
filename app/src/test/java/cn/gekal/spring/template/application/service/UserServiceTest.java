@@ -5,6 +5,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import cn.gekal.spring.template.domain.model.User;
+import cn.gekal.spring.template.domain.model.UserNotFoundException;
 import cn.gekal.spring.template.domain.repository.UserRepository;
 import cn.gekal.spring.template.domain.service.UserDomainService;
 import java.time.LocalDateTime;
@@ -180,7 +181,7 @@ class UserServiceTest {
     // Act & Assert
     Exception exception =
         assertThrows(
-            IllegalArgumentException.class,
+            UserNotFoundException.class,
             () -> {
               userService.updateUser(testId, updateUser);
             });
@@ -205,7 +206,7 @@ class UserServiceTest {
     // Act & Assert
     Exception exception =
         assertThrows(
-            IllegalArgumentException.class,
+            UserNotFoundException.class,
             () -> {
               userService.updateUser(testId, updateUser);
             });
@@ -239,7 +240,7 @@ class UserServiceTest {
     // Act & Assert
     Exception exception =
         assertThrows(
-            IllegalArgumentException.class,
+            UserNotFoundException.class,
             () -> {
               userService.deleteUser(testId);
             });

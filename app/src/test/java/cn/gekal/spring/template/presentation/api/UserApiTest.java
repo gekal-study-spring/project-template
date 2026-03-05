@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import cn.gekal.spring.template.application.service.UserService;
 import cn.gekal.spring.template.domain.model.User;
+import cn.gekal.spring.template.domain.model.UserNotFoundException;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -180,7 +181,7 @@ class UserApiTest {
   void updateUser_whenUserDoesNotExist_shouldReturnNotFound() throws Exception {
     // Arrange
     when(userService.updateUser(eq(testId), any(User.class)))
-        .thenThrow(new IllegalArgumentException("User not found"));
+        .thenThrow(new UserNotFoundException("User not found"));
 
     // Act & Assert
     mockMvc
@@ -207,7 +208,7 @@ class UserApiTest {
   @Test
   void deleteUser_whenUserDoesNotExist_shouldReturnNotFound() throws Exception {
     // Arrange
-    doThrow(new IllegalArgumentException("User not found")).when(userService).deleteUser(testId);
+    doThrow(new UserNotFoundException("User not found")).when(userService).deleteUser(testId);
 
     // Act & Assert
     mockMvc.perform(delete("/api/users/{id}", testId)).andExpect(status().isNotFound());
