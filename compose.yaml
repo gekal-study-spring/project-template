@@ -1,7 +1,7 @@
 services:
   postgres:
     container_name: project-template-postgres
-    image: 'gekal/postgres:17-bullseye'
+    image: 'gekal/postgres:15.10-bullseye'
     build:
       dockerfile: database/Dockerfile
       context: .
