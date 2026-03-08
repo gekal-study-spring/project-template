@@ -26,7 +26,8 @@ logs/
 Thumbs.db
 
 # Dockerファイル自体（必要に応じて）
-Dockerfile
+Dockerfile-app
+Dockerfile-migration
 .dockerignore
 
 # テスト関連

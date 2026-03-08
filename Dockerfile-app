@@ -25,18 +25,17 @@ RUN --mount=type=cache,target=/root/.gradle ./gradlew --no-daemon dependencies >
 COPY . .
 
 # Build the application
-RUN --mount=type=cache,target=/root/.gradle ./gradlew migration:shadowJar app:bootJar --no-daemon
+RUN --mount=type=cache,target=/root/.gradle ./gradlew app:bootJar --no-daemon
 
 # -----------------------------------------------------------------------------
 # Stage 2: Extract Layers
 # -----------------------------------------------------------------------------
-FROM eclipse-temurin:25-jdk AS extractor
+FROM eclipse-temurin:21-jdk AS extractor
 WORKDIR /builder
 
-COPY --from=builder /app/migration/build/libs/*.jar migration.jar
-COPY --from=builder /app/app/build/libs/*.jar app.jar
+COPY --from=builder /app/app/build/libs/*.jar application.jar
 
-RUN java -Djarmode=tools -jar app.jar extract --layers --destination extracted
+RUN java -Djarmode=tools -jar application.jar extract --layers --destination extracted
 
 # -----------------------------------------------------------------------------
 # Stage 3: Runtime Image
@@ -48,9 +47,6 @@ RUN groupadd -r appuser && useradd -r -g appuser appuser  \
 
 WORKDIR /app
 
-COPY start.sh .
-RUN chown -R appuser:appuser /app/start.sh && chmod u+x /app/start.sh
-
 USER appuser
 
 COPY --from=extractor /builder/extracted/dependencies/ ./
@@ -58,6 +54,6 @@ COPY --from=extractor /builder/extracted/spring-boot-loader/ ./
 COPY --from=extractor /builder/extracted/snapshot-dependencies/ ./
 COPY --from=extractor /builder/extracted/application/ ./
 
-COPY --from=extractor /builder/migration.jar migration.jar
+ENV JAVA_OPTS="-Xms256m -Xmx512m"
 
-ENTRYPOINT ["/app/start.sh"]
+ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app/application.jar"]

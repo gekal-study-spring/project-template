@@ -37,7 +37,7 @@ services:
   app:
     container_name: project-template-app
     build:
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-app
       context: .
     environment:
       - 'ENV=dev'
