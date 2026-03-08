@@ -42,9 +42,9 @@ COPY --from=builder /app/migration/build/libs/*.jar migration.jar
 USER appuser
 
 ENV JAVA_OPTS=""
-ENV SPRING_DATASOURCE_URL=""
-ENV SPRING_DATASOURCE_USERNAME=""
-ENV SPRING_DATASOURCE_PASSWORD=""
+ENV DATASOURCE_URL=""
+ENV DATASOURCE_USERNAME=""
+ENV DATASOURCE_PASSWORD=""
 ENV ENV="dev"
 
-ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app/migration.jar -url=\"${SPRING_DATASOURCE_URL}\" -user=\"${SPRING_DATASOURCE_USERNAME}\" -password=\"${SPRING_DATASOURCE_PASSWORD}\" -locations=\"classpath:db/migration/schema,classpath:db/migration/data/${ENV}\" migrate"]
+ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app/migration.jar -url=\"${DATASOURCE_URL}\" -user=\"${DATASOURCE_USERNAME}\" -password=\"${DATASOURCE_PASSWORD}\" -locations=\"classpath:db/migration/schema,classpath:db/migration/data/${ENV}\" migrate"]

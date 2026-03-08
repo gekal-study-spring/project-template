@@ -27,9 +27,9 @@ services:
       context: .
     environment:
       - 'ENV=dev'
-      - 'SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/template'
-      - 'SPRING_DATASOURCE_USERNAME=myuser'
-      - 'SPRING_DATASOURCE_PASSWORD=secret'
+      - 'DATASOURCE_URL=jdbc:postgresql://postgres:5432/template'
+      - 'DATASOURCE_USERNAME=myuser'
+      - 'DATASOURCE_PASSWORD=secret'
     depends_on:
       postgres:
         condition: service_healthy
