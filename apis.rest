@@ -4,6 +4,12 @@
 ### Actuator Health Check
 GET {{ host }}/actuator/health
 
+### Actuator Health liveness Check
+GET {{ host }}/actuator/health/liveness
+
+### Actuator Health Readiness Check
+GET {{ host }}/actuator/health/readiness
+
 ### Get all users
 GET {{ host }}/api/users
 Accept: application/json
