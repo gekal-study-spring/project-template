@@ -10,9 +10,22 @@ FROM eclipse-temurin:21-jdk AS builder
 
 WORKDIR /app
 
+# Gradle wrapper and configuration files
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle settings.gradle ./
+COPY app/build.gradle app/
+COPY migration/build.gradle migration/
+COPY gradle/libs.versions.toml gradle/
+
+# Download dependencies
+RUN --mount=type=cache,target=/root/.gradle ./gradlew --no-daemon dependencies > /dev/null || true
+
+# Copy source code
 COPY . .
 
-RUN ./gradlew clean migration:shadowJar app:bootJar --no-daemon
+# Build the application
+RUN --mount=type=cache,target=/root/.gradle ./gradlew migration:shadowJar app:bootJar --no-daemon
 
 # -----------------------------------------------------------------------------
 # Stage 2: Extract Layers
