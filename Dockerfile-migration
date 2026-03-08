@@ -1,0 +1,50 @@
+# syntax=docker/dockerfile:1
+
+# Refercence
+# https://docs.spring.io/spring-boot/reference/packaging/container-images/dockerfiles.html
+
+# -----------------------------------------------------------------------------
+# Stage 1: Build the application
+# -----------------------------------------------------------------------------
+FROM eclipse-temurin:21-jdk AS builder
+
+WORKDIR /app
+
+# Gradle wrapper and configuration files
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle settings.gradle ./
+COPY app/build.gradle app/
+COPY migration/build.gradle migration/
+COPY gradle/libs.versions.toml gradle/
+
+# Download dependencies
+RUN --mount=type=cache,target=/root/.gradle ./gradlew --no-daemon dependencies > /dev/null || true
+
+# Copy source code
+COPY . .
+
+# Build the application
+RUN --mount=type=cache,target=/root/.gradle ./gradlew migration:shadowJar --no-daemon
+
+# -----------------------------------------------------------------------------
+# Stage 2: Runtime Image
+# -----------------------------------------------------------------------------
+FROM eclipse-temurin:21-jre
+
+RUN groupadd -r appuser && useradd -r -g appuser appuser  \
+    && mkdir -p /app && chown -R appuser:appuser /app
+
+WORKDIR /app
+
+COPY --from=builder /app/migration/build/libs/*.jar migration.jar
+
+USER appuser
+
+ENV JAVA_OPTS=""
+ENV SPRING_DATASOURCE_URL=""
+ENV SPRING_DATASOURCE_USERNAME=""
+ENV SPRING_DATASOURCE_PASSWORD=""
+ENV ENV="dev"
+
+ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app/migration.jar -url=\"${SPRING_DATASOURCE_URL}\" -user=\"${SPRING_DATASOURCE_USERNAME}\" -password=\"${SPRING_DATASOURCE_PASSWORD}\" -locations=\"classpath:db/migration/schema,classpath:db/migration/data/${ENV}\" migrate"]

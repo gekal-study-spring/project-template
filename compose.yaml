@@ -20,6 +20,20 @@ services:
       timeout: 5s
       retries: 5
 
+  migration:
+    container_name: project-template-migration
+    build:
+      dockerfile: Dockerfile-migration
+      context: .
+    environment:
+      - 'ENV=dev'
+      - 'SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/template'
+      - 'SPRING_DATASOURCE_USERNAME=myuser'
+      - 'SPRING_DATASOURCE_PASSWORD=secret'
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   app:
     container_name: project-template-app
     build:
@@ -35,6 +49,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      migration:
+        condition: service_completed_successfully
     healthcheck:
       test: [ "CMD-SHELL", "curl -f http://127.0.0.1:8080/actuator/health || exit 1" ]
       interval: 10s
