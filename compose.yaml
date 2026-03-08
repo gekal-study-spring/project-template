@@ -1,3 +1,8 @@
+x-db-config: &db-config
+  POSTGRES_DB: &db-name template
+  POSTGRES_USER: &db-user myuser
+  POSTGRES_PASSWORD: &db-password secret
+
 services:
   postgres:
     container_name: project-template-postgres
@@ -6,9 +11,7 @@ services:
       dockerfile: database/Dockerfile
       context: .
     environment:
-      - 'POSTGRES_DB=template'
-      - 'POSTGRES_USER=myuser'
-      - 'POSTGRES_PASSWORD=secret'
+      <<: *db-config
     ports:
       - '15432:5432'
     volumes:
@@ -26,10 +29,10 @@ services:
       dockerfile: Dockerfile-migration
       context: .
     environment:
-      - 'ENV=dev'
-      - 'DATASOURCE_URL=jdbc:postgresql://postgres:5432/template'
-      - 'DATASOURCE_USERNAME=myuser'
-      - 'DATASOURCE_PASSWORD=secret'
+      ENV: &env dev
+      DATASOURCE_URL: &db-url jdbc:postgresql://postgres:5432/template
+      DATASOURCE_USERNAME: *db-user
+      DATASOURCE_PASSWORD: *db-password
     depends_on:
       postgres:
         condition: service_healthy
@@ -40,10 +43,10 @@ services:
       dockerfile: Dockerfile-app
       context: .
     environment:
-      - 'ENV=dev'
-      - 'SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/template'
-      - 'SPRING_DATASOURCE_USERNAME=myuser'
-      - 'SPRING_DATASOURCE_PASSWORD=secret'
+      ENV: *env
+      SPRING_DATASOURCE_URL: *db-url
+      SPRING_DATASOURCE_USERNAME: *db-user
+      SPRING_DATASOURCE_PASSWORD: *db-password
     ports:
       - '18080:8080'
     depends_on:
