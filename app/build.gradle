@@ -32,8 +32,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation libs.mybatis.spring.boot.starter
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 
+    implementation libs.mybatis.spring.boot.starter
     implementation libs.springdoc.openapi.starter.webmvc.ui
 
     runtimeOnly 'org.postgresql:postgresql'
@@ -45,8 +47,9 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation libs.mybatis.spring.boot.starter.test
+    testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation libs.mybatis.spring.boot.starter.test
 }
 
 tasks.named('test') {
