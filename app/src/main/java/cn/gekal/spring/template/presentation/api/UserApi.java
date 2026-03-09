@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -44,6 +45,7 @@ public class UserApi {
   }
 
   @GetMapping
+  @PreAuthorize("hasAuthority('users::read')")
   @Operation(summary = "ユーザー一覧取得", description = "登録されているすべてのユーザーを取得します")
   @ApiResponse(responseCode = "200", description = "成功")
   public List<UserResponse> getAllUsers() {
@@ -51,6 +53,7 @@ public class UserApi {
   }
 
   @PostMapping
+  @PreAuthorize("hasAuthority('users::create')")
   @ResponseStatus(HttpStatus.CREATED)
   @Operation(summary = "ユーザー作成", description = "新しいユーザーを作成します")
   @ApiResponse(responseCode = "201", description = "ユーザーが作成されました")
@@ -60,6 +63,7 @@ public class UserApi {
   }
 
   @PutMapping("/{id}")
+  @PreAuthorize("hasAuthority('users::update')")
   @ResponseStatus(HttpStatus.OK)
   @Operation(summary = "ユーザー更新", description = "既存のユーザー情報を更新します")
   @ApiResponse(responseCode = "200", description = "ユーザーが更新されました")
@@ -73,6 +77,7 @@ public class UserApi {
   }
 
   @DeleteMapping("/{id}")
+  @PreAuthorize("hasAuthority('users::delete')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @Operation(summary = "ユーザー削除", description = "ユーザーを削除します")
   @ApiResponse(responseCode = "204", description = "ユーザーが削除されました")

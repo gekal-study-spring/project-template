@@ -1,5 +1,6 @@
 
 @host = http://localhost:8080
+@accessToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0LXVzZXIiLCJzY29wZSI6InVzZXJzOjpyZWFkIHVzZXJzOjpjcmVhdGUgdXNlcnM6OnVwZGF0ZSB1c2Vyczo6ZGVsZXRlIiwiZXhwIjoyMDg4NjgyMjE3fQ.vzP-Lg1s5THiRWNPJpMLtECqNQURl9RnlVogPzYbi5y3va4bvds2ZHWT4wWTH9jciRj9C2C4lqW5FX82czCdNYZbgqEOv6JYzTdMCWZOSfjkqbsQKyjkvbCiYqlJImcdcG7gGYqlOw41KoQyL3H2gB5aGRPQ6zRtx50_oVFrKBMmj8DgHd89VF1Y_Kl7jcgM4jp5dh1cY3ytV92_kTe8hNsS2LAGkghdqicFDWfroEaFgzGsROddljYP86Gkn2YT-cpkGXgjGZ1uQyzBjLFefN3dl64P6OALaZsNinCecNJsmarAgC3x_0RDuzzVkW0oWUpxxjniuEbWTxq7cDpUUQ"
 
 ### Actuator Health Check
 GET {{ host }}/actuator/health
@@ -12,11 +13,13 @@ GET {{ host }}/actuator/health/readiness
 
 ### Get all users
 GET {{ host }}/api/users
+Authorization: Bearer {{ accessToken }}
 Accept: application/json
 
 ### Create new user
 # @name new
 POST {{ host }}/api/users
+Authorization: Bearer {{ accessToken }}
 Content-Type: application/json
 
 {
@@ -29,10 +32,12 @@ Content-Type: application/json
 
 ### Get user by ID
 GET {{ host }}/api/users/{{userId}}
+Authorization: Bearer {{ accessToken }}
 Accept: application/json
 
 ### Update user
 PUT {{ host }}/api/users/{{userId}}
+Authorization: Bearer {{ accessToken }}
 Content-Type: application/json
 
 {
@@ -42,3 +47,4 @@ Content-Type: application/json
 
 ### Delete user
 DELETE {{ host }}/api/users/{{userId}}
+Authorization: Bearer {{ accessToken }}

@@ -5,15 +5,7 @@ EXP_TIME=$(date -v+10y +%s)
 
 # ヘッダーとペイロードを定義
 HEADER='{"alg":"RS256","typ":"JWT"}'
-
-PAYLOAD=$(cat <<EOF
-{
-  "sub": "test-user",
-  "scope": "read",
-  "exp": $EXP_TIME
-}
-EOF
-)
+PAYLOAD='{"sub":"test-user","scope":"users::read users::create users::update users::delete","exp":'$EXP_TIME'}'
 
 # Base64URLエンコード用の関数
 b64enc() { openssl base64 -e -A | tr '+/' '-_' | tr -d '='; }
