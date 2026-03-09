@@ -10,6 +10,7 @@ postgresql = "42.7.10"
 flyway = "12.0.3"
 jansi = "1.18"
 jackson = "3.0.4"
+springdoc-openapi = "3.0.2"
 
 [libraries]
 rewrite-spring = { group = "org.openrewrite.recipe", name = "rewrite-spring", version.ref = "rewrite-spring" }
@@ -21,6 +22,7 @@ jansi = { group = "org.fusesource.jansi", name = "jansi", version.ref = "jansi" 
 jackson-dataformat-toml = { group = "tools.jackson.dataformat", name = "jackson-dataformat-toml", version.ref = "jackson" }
 jackson-dataformat-xml = { group = "tools.jackson.dataformat", name = "jackson-dataformat-xml", version.ref = "jackson" }
 flyway-database-postgresql = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }
+springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-openapi" }
 # used by test
 mybatis-spring-boot-starter-test = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-starter-test", version.ref = "mybatis" }
 

@@ -34,6 +34,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation libs.mybatis.spring.boot.starter
 
+    implementation libs.springdoc.openapi.starter.webmvc.ui
+
     runtimeOnly 'org.postgresql:postgresql'
 
     rewrite libs.rewrite.spring
