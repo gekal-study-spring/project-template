@@ -3,6 +3,7 @@ package cn.gekal.spring.template.presentation.api;
 import cn.gekal.spring.template.application.service.UserService;
 import cn.gekal.spring.template.domain.model.User;
 import cn.gekal.spring.template.domain.model.UserNotFoundException;
+import cn.gekal.spring.template.domain.model.UserScope;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -45,7 +46,7 @@ public class UserApi {
   }
 
   @GetMapping
-  @PreAuthorize("hasAuthority('users::read')")
+  @PreAuthorize("hasAuthority('" + UserScope.Values.READ + "')")
   @Operation(summary = "ユーザー一覧取得", description = "登録されているすべてのユーザーを取得します")
   @ApiResponse(responseCode = "200", description = "成功")
   public List<UserResponse> getAllUsers() {
@@ -53,7 +54,7 @@ public class UserApi {
   }
 
   @PostMapping
-  @PreAuthorize("hasAuthority('users::create')")
+  @PreAuthorize("hasAuthority('" + UserScope.Values.CREATE + "')")
   @ResponseStatus(HttpStatus.CREATED)
   @Operation(summary = "ユーザー作成", description = "新しいユーザーを作成します")
   @ApiResponse(responseCode = "201", description = "ユーザーが作成されました")
@@ -63,7 +64,7 @@ public class UserApi {
   }
 
   @PutMapping("/{id}")
-  @PreAuthorize("hasAuthority('users::update')")
+  @PreAuthorize("hasAuthority('" + UserScope.Values.UPDATE + "')")
   @ResponseStatus(HttpStatus.OK)
   @Operation(summary = "ユーザー更新", description = "既存のユーザー情報を更新します")
   @ApiResponse(responseCode = "200", description = "ユーザーが更新されました")
@@ -77,7 +78,7 @@ public class UserApi {
   }
 
   @DeleteMapping("/{id}")
-  @PreAuthorize("hasAuthority('users::delete')")
+  @PreAuthorize("hasAuthority('" + UserScope.Values.DELETE + "')")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @Operation(summary = "ユーザー削除", description = "ユーザーを削除します")
   @ApiResponse(responseCode = "204", description = "ユーザーが削除されました")

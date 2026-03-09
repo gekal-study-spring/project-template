@@ -4,6 +4,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import cn.gekal.spring.template.domain.model.UserScope;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ class UserApiSecurityTest {
   }
 
   @Test
-  @WithMockUser(authorities = "users::read")
+  @WithMockUser(authorities = UserScope.Values.READ)
   void getAllUsers_withCorrectAuthority_shouldReturnOk() throws Exception {
     mockMvc.perform(get("/api/users")).andExpect(status().isOk());
   }
