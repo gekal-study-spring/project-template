@@ -13,6 +13,13 @@ spring:
         jwt:
           public-key-location: classpath:jwt/public-key.pem
 
+aws:
+  apigateway:
+    # AWS API Gateway VPCリンクのID（例：vqxxxx）
+    vpc-link-id: "vqxxxx"
+    # ALBの内部DNSドメイン（http:// または https:// を含め、末尾の / は含めない）
+    alb-uri: "http://internal-my-app-alb-123456789.ap-northeast-1.elb.amazonaws.com"
+
 mybatis:
   type-aliases-package: cn.gekal.spring.template.domain.model
   type-handlers-package: cn.gekal.spring.template.infrastructure.config
