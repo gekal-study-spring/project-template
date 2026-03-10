@@ -3,13 +3,13 @@ package cn.gekal.spring.template.domain.model;
 /** ユーザー操作に関するスコープ（権限）を定義するEnumです。 */
 public enum UserScope {
   /** ユーザー参照権限 */
-  READ("users::read"),
+  READ(Values.READ),
   /** ユーザー作成権限 */
-  CREATE("users::create"),
+  CREATE(Values.CREATE),
   /** ユーザー更新権限 */
-  UPDATE("users::update"),
+  UPDATE(Values.UPDATE),
   /** ユーザー削除権限 */
-  DELETE("users::delete");
+  DELETE(Values.DELETE);
 
   private final String value;
 
