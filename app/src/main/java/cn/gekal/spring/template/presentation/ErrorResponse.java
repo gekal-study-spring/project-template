@@ -1,8 +1,11 @@
 package cn.gekal.spring.template.presentation;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 @Schema(description = "共通エラーレスポンス")
 public class ErrorResponse {
@@ -39,6 +42,27 @@ public class ErrorResponse {
       int status, String title, String detail, String instance, List<FieldErrorDetail> errors) {
     this(status, title, detail, instance);
     this.errors = errors;
+  }
+
+  public static ErrorResponse of(HttpStatus status, String detail, HttpServletRequest request) {
+    return new ErrorResponse(
+        status.value(), status.getReasonPhrase(), detail, request.getRequestURI());
+  }
+
+  public static ErrorResponse of(
+      HttpStatus status, String detail, HttpServletRequest request, List<FieldErrorDetail> errors) {
+    return new ErrorResponse(
+        status.value(), status.getReasonPhrase(), detail, request.getRequestURI(), errors);
+  }
+
+  public static ResponseEntity<ErrorResponse> toEntity(
+      HttpStatus status, String detail, HttpServletRequest request) {
+    return ResponseEntity.status(status).body(of(status, detail, request));
+  }
+
+  public static ResponseEntity<ErrorResponse> toEntity(
+      HttpStatus status, String detail, HttpServletRequest request, List<FieldErrorDetail> errors) {
+    return ResponseEntity.status(status).body(of(status, detail, request, errors));
   }
 
   public int getStatus() {

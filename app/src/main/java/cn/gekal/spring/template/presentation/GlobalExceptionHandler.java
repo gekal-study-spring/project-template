@@ -26,42 +26,21 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorResponse> handleAuthorizationDeniedException(
       AuthorizationDeniedException ex, HttpServletRequest request) {
     log.error("Authorization denied: ", ex);
-    HttpStatus status = HttpStatus.FORBIDDEN;
-    return ResponseEntity.status(status)
-        .body(
-            new ErrorResponse(
-                status.value(),
-                status.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()));
+    return ErrorResponse.toEntity(HttpStatus.FORBIDDEN, ex.getMessage(), request);
   }
 
   @ExceptionHandler({NoHandlerFoundException.class, NoResourceFoundException.class})
   public ResponseEntity<ErrorResponse> handleNotFoundException(
       Exception ex, HttpServletRequest request) {
     log.error("Resource not found: ", ex);
-    HttpStatus status = HttpStatus.NOT_FOUND;
-    return ResponseEntity.status(status)
-        .body(
-            new ErrorResponse(
-                status.value(),
-                status.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()));
+    return ErrorResponse.toEntity(HttpStatus.NOT_FOUND, ex.getMessage(), request);
   }
 
   @ExceptionHandler(UserNotFoundException.class)
   public ResponseEntity<ErrorResponse> handleUserNotFoundException(
       UserNotFoundException ex, HttpServletRequest request) {
     log.error("User not found: ", ex);
-    HttpStatus status = HttpStatus.NOT_FOUND;
-    return ResponseEntity.status(status)
-        .body(
-            new ErrorResponse(
-                status.value(),
-                status.getReasonPhrase(),
-                ex.getMessage(),
-                request.getRequestURI()));
+    return ErrorResponse.toEntity(HttpStatus.NOT_FOUND, ex.getMessage(), request);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -75,15 +54,7 @@ public class GlobalExceptionHandler {
             .toList();
 
     log.error("Validation error: {}", errors);
-    HttpStatus status = HttpStatus.BAD_REQUEST;
-    return ResponseEntity.status(status)
-        .body(
-            new ErrorResponse(
-                status.value(),
-                status.getReasonPhrase(),
-                "Validation failed",
-                request.getRequestURI(),
-                errors));
+    return ErrorResponse.toEntity(HttpStatus.BAD_REQUEST, "Validation failed", request, errors);
   }
 
   @ExceptionHandler(HandlerMethodValidationException.class)
@@ -102,15 +73,7 @@ public class GlobalExceptionHandler {
             .toList();
 
     log.error("Validation error: {}", errors);
-    HttpStatus status = HttpStatus.BAD_REQUEST;
-    return ResponseEntity.status(status)
-        .body(
-            new ErrorResponse(
-                status.value(),
-                status.getReasonPhrase(),
-                "Validation failed",
-                request.getRequestURI(),
-                errors));
+    return ErrorResponse.toEntity(HttpStatus.BAD_REQUEST, "Validation failed", request, errors);
   }
 
   @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -121,24 +84,14 @@ public class GlobalExceptionHandler {
             "Parameter '%s' should be of type '%s'",
             ex.getName(), ex.getRequiredType().getSimpleName());
     log.error("Type mismatch error: {}", message);
-    HttpStatus status = HttpStatus.BAD_REQUEST;
-    return ResponseEntity.status(status)
-        .body(
-            new ErrorResponse(
-                status.value(), status.getReasonPhrase(), message, request.getRequestURI()));
+    return ErrorResponse.toEntity(HttpStatus.BAD_REQUEST, message, request);
   }
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<ErrorResponse> handleGenericException(
       Exception ex, HttpServletRequest request) {
     log.error("An unexpected error occurred: ", ex);
-    HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-    return ResponseEntity.status(status)
-        .body(
-            new ErrorResponse(
-                status.value(),
-                status.getReasonPhrase(),
-                "An unexpected error occurred",
-                request.getRequestURI()));
+    return ErrorResponse.toEntity(
+        HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", request);
   }
 }
