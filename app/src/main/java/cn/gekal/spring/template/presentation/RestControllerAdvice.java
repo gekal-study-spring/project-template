@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @ControllerAdvice
 public class RestControllerAdvice {
@@ -13,6 +15,11 @@ public class RestControllerAdvice {
   public ResponseEntity<String> handleAuthorizationDeniedException(
       AuthorizationDeniedException ex) {
     throw ex;
+  }
+
+  @ExceptionHandler({NoHandlerFoundException.class, NoResourceFoundException.class})
+  public ResponseEntity<String> handleNotFoundException(Exception ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
   }
 
   @ExceptionHandler(Exception.class)
