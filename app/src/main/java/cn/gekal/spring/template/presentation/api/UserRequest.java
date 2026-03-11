@@ -2,6 +2,9 @@ package cn.gekal.spring.template.presentation.api;
 
 import cn.gekal.spring.template.domain.model.User;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -11,9 +14,14 @@ public class UserRequest {
   @Schema(description = "ユーザーID", example = "550e8400-e29b-41d4-a716-446655440000")
   private UUID id;
 
+  @NotBlank
+  @Size(max = 50)
   @Schema(description = "ユーザー名", example = "john_doe")
   private String username;
 
+  @NotBlank
+  @Email
+  @Size(max = 100)
   @Schema(description = "メールアドレス", example = "john@example.com")
   private String email;
 

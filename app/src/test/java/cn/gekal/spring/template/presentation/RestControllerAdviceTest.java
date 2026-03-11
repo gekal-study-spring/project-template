@@ -1,6 +1,7 @@
 package cn.gekal.spring.template.presentation;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -42,6 +43,27 @@ class RestControllerAdviceTest {
     mockMvc
         .perform(get("/v3/api-docs"))
         .andExpect(status().isNotFound())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.message").exists());
+  }
+
+  @Test
+  void testMethodArgumentTypeMismatch_shouldReturnBadRequest() throws Exception {
+    mockMvc
+        .perform(get("/api/users/not-a-uuid"))
+        .andExpect(status().isBadRequest())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.message").value("Parameter 'id' should be of type 'UUID'"));
+  }
+
+  @Test
+  void testValidationFieldError_shouldReturnBadRequest() throws Exception {
+    String invalidUser = "{\"username\": \"\", \"email\": \"invalid-email\"}";
+    mockMvc
+        .perform(post("/api/users")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(invalidUser))
+        .andExpect(status().isBadRequest())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.message").exists());
   }

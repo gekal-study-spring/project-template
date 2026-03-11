@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -61,7 +62,7 @@ public class UserApi {
   @ResponseStatus(HttpStatus.CREATED)
   @Operation(summary = "ユーザー作成", description = "新しいユーザーを作成します")
   @ApiResponse(responseCode = "201", description = "ユーザーが作成されました")
-  public UserResponse createUser(@RequestBody UserRequest userRequest) {
+  public UserResponse createUser(@Valid @RequestBody UserRequest userRequest) {
     User user = userService.createUser(userRequest.toUser());
     return new UserResponse(user);
   }
@@ -75,7 +76,7 @@ public class UserApi {
       responseCode = "404",
       description = "ユーザーが見つかりませんでした",
       content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-  public UserResponse updateUser(@PathVariable UUID id, @RequestBody UserRequest userRequest) {
+  public UserResponse updateUser(@PathVariable UUID id, @Valid @RequestBody UserRequest userRequest) {
     User user = userService.updateUser(id, userRequest.toUser());
     return new UserResponse(user);
   }
