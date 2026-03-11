@@ -44,3 +44,6 @@ springdoc:
     path: /swagger-ui.html
     enabled: true
   show-actuator: true
+logging:
+  level:
+    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG

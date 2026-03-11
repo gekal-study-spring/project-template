@@ -7,10 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ConditionalOnClass(OpenApiCustomizer.class)
 public class OpenApiConfig {
 
   @Value("${aws.apigateway.vpc-link-id}")
