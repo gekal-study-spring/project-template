@@ -4,11 +4,15 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import cn.gekal.spring.template.application.service.UserService;
 import cn.gekal.spring.template.domain.model.UserScope;
+import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -18,6 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
 class UserApiSecurityTest {
 
   @Autowired private WebApplicationContext context;
+  @MockitoBean private UserService userService;
 
   private MockMvc mockMvc;
 
@@ -34,6 +39,7 @@ class UserApiSecurityTest {
   @Test
   @WithMockUser(authorities = UserScope.Values.READ)
   void getAllUsers_withCorrectAuthority_shouldReturnOk() throws Exception {
+    Mockito.when(userService.getAllUsers()).thenReturn(Collections.emptyList());
     mockMvc.perform(get("/api/users")).andExpect(status().isOk());
   }
 
