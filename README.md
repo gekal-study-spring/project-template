@@ -7,11 +7,13 @@
 
 - **Java**: 21+
 - **Framework**: Spring Boot 3.x
+- **Security**: Spring Security (OAuth 2.0 Resource Server / JWT)
 - **Build Tool**: Gradle (Multi-module)
 - **Database**: PostgreSQL 17
 - **Persistence**: MyBatis
 - **Migration**: Flyway (別モジュールとして分離)
 - **Container**: Docker, Docker Compose
+- **API Documentation**: OpenAPI 3 / Swagger UI
 
 ## ディレクトリ構成
 
@@ -24,15 +26,18 @@
 │   │       ├── domain/           # ドメイン層（Model, Repository Interface, Domain Service）
 │   │       ├── infrastructure/   # インフラストラクチャ層（Repository Implementation, Config）
 │   │       └── presentation/     # プレゼンテーション層（API Controller, Request/Response）
-│   └── src/main/resources/       # 設定ファイル、MyBatis Mapper XML
+│   └── src/main/resources/       # 設定、MyBatis Mapper、JWT公開鍵
 ├── migration/           # データベースマイグレーションモジュール（Flyway）
 │   ├── src/main/resources/db/migration/
 │   │   ├── schema/               # テーブル定義スクリプト
 │   │   └── data/                 # 初期データ・テストデータ（環境別）
 ├── database/            # データベース初期化用スクリプト・Dockerfile
 ├── compose.yaml         # Docker Compose設定
-├── Dockerfile           # アプリケーション実行用Dockerfile
-└── start.sh             # アプリケーション起動スクリプト
+├── Dockerfile-app       # アプリケーション用Dockerfile
+├── Dockerfile-migration # マイグレーション用Dockerfile
+├── generate-jwt.sh      # テスト用JWT生成スクリプト
+├── apis.rest            # VS Code REST Client用ファイル
+└── upgrade.md           # 更新履歴
 ```
 
 ## セットアップと起動方法
@@ -40,7 +45,7 @@
 ### 前提条件
 
 - Docker / Docker Compose がインストールされていること
-- Java 21 がインストールされていること
+- Java 21 がインストールされていること (ローカル実行時)
 
 ### 開発環境の起動（Docker Compose）
 
@@ -51,8 +56,20 @@ docker compose up --build
 ```
 
 - **API**: `http://localhost:18080`
+- **Swagger UI**: `http://localhost:18080/swagger-ui.html`
 - **Health Check**: `http://localhost:18080/actuator/health`
 - **Database**: `localhost:15432` (User: `myuser`, Password: `secret`, DB: `template`)
+
+### 認証・認可
+
+このテンプレートは、Spring Security を使用した JWT による認証をサポートしています。
+
+- **公開鍵/秘密鍵**: `app/src/main/resources/jwt/` に配置されています。
+- **JWTの生成**: `generate-jwt.sh` を使用して、テスト用の JWT を生成できます。
+  ```bash
+  ./generate-jwt.sh
+  ```
+  生成されたトークンを `Authorization: Bearer <token>` ヘッダーにセットして API を呼び出してください。
 
 ### ローカルでの実行
 
