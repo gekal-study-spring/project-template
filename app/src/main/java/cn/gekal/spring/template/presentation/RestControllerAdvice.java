@@ -16,22 +16,22 @@ public class RestControllerAdvice {
   private static final Logger log = LoggerFactory.getLogger(RestControllerAdvice.class);
 
   @ExceptionHandler(AuthorizationDeniedException.class)
-  public ResponseEntity<String> handleAuthorizationDeniedException(
+  public ResponseEntity<ErrorResponse> handleAuthorizationDeniedException(
       AuthorizationDeniedException ex) {
     log.error("Authorization denied: ", ex);
-    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(ex.getMessage()));
   }
 
   @ExceptionHandler({NoHandlerFoundException.class, NoResourceFoundException.class})
-  public ResponseEntity<String> handleNotFoundException(Exception ex) {
+  public ResponseEntity<ErrorResponse> handleNotFoundException(Exception ex) {
     log.error("Resource not found: ", ex);
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(ex.getMessage()));
   }
 
   @ExceptionHandler(Exception.class)
-  public ResponseEntity<String> handleGenericException(Exception ex) {
+  public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
     log.error("An unexpected error occurred: ", ex);
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .body("An unexpected error occurred: " + ex.getMessage());
+        .body(new ErrorResponse("An unexpected error occurred"));
   }
 }

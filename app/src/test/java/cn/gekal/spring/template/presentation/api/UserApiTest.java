@@ -189,7 +189,9 @@ class UserApiTest {
             put("/api/users/{id}", testId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(userRequest)))
-        .andExpect(status().isNotFound());
+        .andExpect(status().isNotFound())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.message", is("User not found")));
 
     verify(userService).updateUser(eq(testId), any(User.class));
   }
@@ -211,7 +213,11 @@ class UserApiTest {
     doThrow(new UserNotFoundException("User not found")).when(userService).deleteUser(testId);
 
     // Act & Assert
-    mockMvc.perform(delete("/api/users/{id}", testId)).andExpect(status().isNotFound());
+    mockMvc
+        .perform(delete("/api/users/{id}", testId))
+        .andExpect(status().isNotFound())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.message", is("User not found")));
 
     verify(userService).deleteUser(testId);
   }

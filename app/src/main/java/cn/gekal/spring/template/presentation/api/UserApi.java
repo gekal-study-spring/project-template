@@ -4,6 +4,7 @@ import cn.gekal.spring.template.application.service.UserService;
 import cn.gekal.spring.template.domain.model.User;
 import cn.gekal.spring.template.domain.model.UserNotFoundException;
 import cn.gekal.spring.template.domain.model.UserScope;
+import cn.gekal.spring.template.presentation.ErrorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,12 +38,14 @@ public class UserApi {
   @ApiResponse(
       responseCode = "404",
       description = "ユーザーが見つかりませんでした",
-      content = @Content(schema = @Schema(implementation = String.class)))
+      content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   public ResponseEntity<UserResponse> getUserById(@PathVariable UUID id) {
 
     Optional<UserResponse> userResponse = userService.getUserById(id).map(UserResponse::new);
 
-    return userResponse.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    return userResponse
+        .map(ResponseEntity::ok)
+        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
   }
 
   @GetMapping
@@ -71,7 +74,7 @@ public class UserApi {
   @ApiResponse(
       responseCode = "404",
       description = "ユーザーが見つかりませんでした",
-      content = @Content(schema = @Schema(implementation = String.class)))
+      content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   public UserResponse updateUser(@PathVariable UUID id, @RequestBody UserRequest userRequest) {
     User user = userService.updateUser(id, userRequest.toUser());
     return new UserResponse(user);
@@ -85,14 +88,14 @@ public class UserApi {
   @ApiResponse(
       responseCode = "404",
       description = "ユーザーが見つかりませんでした",
-      content = @Content(schema = @Schema(implementation = String.class)))
+      content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   public void deleteUser(@PathVariable UUID id) {
     userService.deleteUser(id);
   }
 
   @ExceptionHandler(UserNotFoundException.class)
-  public ResponseEntity<String> validateUser(UserNotFoundException e) {
+  public ResponseEntity<ErrorResponse> validateUser(UserNotFoundException e) {
 
-    return ResponseEntity.notFound().build();
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
   }
 }
