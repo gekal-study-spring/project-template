@@ -12,8 +12,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/users")
 @Tag(name = "User API", description = "ユーザーに関する操作を提供します")
 public class UserApi {
+
+  private static final Logger log = LoggerFactory.getLogger(UserApi.class);
 
   private final UserService userService;
 
@@ -42,11 +45,13 @@ public class UserApi {
       content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   public ResponseEntity<UserResponse> getUserById(@PathVariable UUID id) {
 
-    Optional<UserResponse> userResponse = userService.getUserById(id).map(UserResponse::new);
+    UserResponse userResponse =
+        userService
+            .getUserById(id)
+            .map(UserResponse::new)
+            .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-    return userResponse
-        .map(ResponseEntity::ok)
-        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
+    return ResponseEntity.ok(userResponse);
   }
 
   @GetMapping
@@ -76,7 +81,8 @@ public class UserApi {
       responseCode = "404",
       description = "ユーザーが見つかりませんでした",
       content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-  public UserResponse updateUser(@PathVariable UUID id, @Valid @RequestBody UserRequest userRequest) {
+  public UserResponse updateUser(
+      @PathVariable UUID id, @Valid @RequestBody UserRequest userRequest) {
     User user = userService.updateUser(id, userRequest.toUser());
     return new UserResponse(user);
   }
@@ -92,11 +98,5 @@ public class UserApi {
       content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   public void deleteUser(@PathVariable UUID id) {
     userService.deleteUser(id);
-  }
-
-  @ExceptionHandler(UserNotFoundException.class)
-  public ResponseEntity<ErrorResponse> validateUser(UserNotFoundException e) {
-
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
   }
 }

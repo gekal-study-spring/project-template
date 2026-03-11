@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import cn.gekal.spring.template.application.service.UserService;
 import cn.gekal.spring.template.domain.model.User;
 import cn.gekal.spring.template.domain.model.UserNotFoundException;
+import cn.gekal.spring.template.presentation.GlobalExceptionHandler;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -49,7 +50,10 @@ class UserApiTest {
   @BeforeEach
   void setUp() {
     // Initialize MockMvc
-    mockMvc = MockMvcBuilders.standaloneSetup(userApi).build();
+    mockMvc =
+        MockMvcBuilders.standaloneSetup(userApi)
+            .setControllerAdvice(new GlobalExceptionHandler())
+            .build();
 
     // Initialize ObjectMapper
     objectMapper =
@@ -100,7 +104,11 @@ class UserApiTest {
     when(userService.getUserById(testId)).thenReturn(Optional.empty());
 
     // Act & Assert
-    mockMvc.perform(get("/api/users/{id}", testId)).andExpect(status().isNotFound());
+    mockMvc
+        .perform(get("/api/users/{id}", testId))
+        .andExpect(status().isNotFound())
+        .andExpect(jsonPath("$.status", is(404)))
+        .andExpect(jsonPath("$.detail", is("User not found")));
 
     verify(userService).getUserById(testId);
   }
@@ -191,7 +199,8 @@ class UserApiTest {
                 .content(objectMapper.writeValueAsString(userRequest)))
         .andExpect(status().isNotFound())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-        .andExpect(jsonPath("$.message", is("User not found")));
+        .andExpect(jsonPath("$.status", is(404)))
+        .andExpect(jsonPath("$.detail", is("User not found")));
 
     verify(userService).updateUser(eq(testId), any(User.class));
   }
@@ -217,7 +226,8 @@ class UserApiTest {
         .perform(delete("/api/users/{id}", testId))
         .andExpect(status().isNotFound())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-        .andExpect(jsonPath("$.message", is("User not found")));
+        .andExpect(jsonPath("$.status", is(404)))
+        .andExpect(jsonPath("$.detail", is("User not found")));
 
     verify(userService).deleteUser(testId);
   }
