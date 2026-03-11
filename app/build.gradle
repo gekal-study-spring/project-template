@@ -36,7 +36,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 
     implementation libs.mybatis.spring.boot.starter
-    implementation libs.springdoc.openapi.starter.webmvc.ui
+
+    compileOnly libs.springdoc.openapi.starter.webmvc.ui
+    developmentOnly libs.springdoc.openapi.starter.webmvc.ui
 
     runtimeOnly 'org.postgresql:postgresql'
 
