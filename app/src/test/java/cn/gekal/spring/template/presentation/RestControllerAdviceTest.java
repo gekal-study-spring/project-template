@@ -1,15 +1,21 @@
 package cn.gekal.spring.template.presentation;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import cn.gekal.spring.template.application.service.UserService;
+import cn.gekal.spring.template.domain.model.UserNotFoundException;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -18,6 +24,8 @@ import org.springframework.web.context.WebApplicationContext;
 class RestControllerAdviceTest {
 
   @Autowired private WebApplicationContext context;
+
+  @MockitoBean private UserService userService;
 
   private MockMvc mockMvc;
 
@@ -74,8 +82,11 @@ class RestControllerAdviceTest {
 
   @Test
   void testUserNotFound_shouldReturnNotFound() throws Exception {
+    when(userService.getUserById(any(UUID.class)))
+        .thenThrow(new UserNotFoundException("User not found"));
+
     mockMvc
-        .perform(get("/api/users/" + java.util.UUID.randomUUID()))
+        .perform(get("/api/users/" + UUID.randomUUID()))
         .andExpect(status().isNotFound())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.status").value(404))
