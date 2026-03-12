@@ -26,21 +26,21 @@ public class GlobalExceptionHandler {
   public ResponseEntity<ErrorResponse> handleAuthorizationDeniedException(
       AuthorizationDeniedException ex, HttpServletRequest request) {
     log.error("Authorization denied: ", ex);
-    return ErrorResponse.toEntity(HttpStatus.FORBIDDEN, ex.getMessage(), request);
+    return ErrorResponse.toEntity(HttpStatus.FORBIDDEN, "Access is denied", request);
   }
 
   @ExceptionHandler({NoHandlerFoundException.class, NoResourceFoundException.class})
   public ResponseEntity<ErrorResponse> handleNotFoundException(
       Exception ex, HttpServletRequest request) {
     log.error("Resource not found: ", ex);
-    return ErrorResponse.toEntity(HttpStatus.NOT_FOUND, ex.getMessage(), request);
+    return ErrorResponse.toEntity(HttpStatus.NOT_FOUND, "Resource not found", request);
   }
 
   @ExceptionHandler(UserNotFoundException.class)
   public ResponseEntity<ErrorResponse> handleUserNotFoundException(
       UserNotFoundException ex, HttpServletRequest request) {
     log.error("User not found: ", ex);
-    return ErrorResponse.toEntity(HttpStatus.NOT_FOUND, ex.getMessage(), request);
+    return ErrorResponse.toEntity(HttpStatus.NOT_FOUND, "User not found", request);
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -81,9 +81,8 @@ public class GlobalExceptionHandler {
       MethodArgumentTypeMismatchException ex, HttpServletRequest request) {
     String message =
         String.format(
-            "Parameter '%s' should be of type '%s'",
-            ex.getName(), ex.getRequiredType().getSimpleName());
-    log.error("Type mismatch error: {}", message);
+            "Parameter value is invalid for type '%s'", ex.getRequiredType().getSimpleName());
+    log.error("Type mismatch error for parameter '{}': {}", ex.getName(), message);
     return ErrorResponse.toEntity(HttpStatus.BAD_REQUEST, message, request);
   }
 

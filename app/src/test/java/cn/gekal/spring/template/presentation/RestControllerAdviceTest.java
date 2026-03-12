@@ -34,7 +34,7 @@ class RestControllerAdviceTest {
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.status").value(404))
         .andExpect(jsonPath("$.title").value("Not Found"))
-        .andExpect(jsonPath("$.detail").exists())
+        .andExpect(jsonPath("$.detail").value("Resource not found"))
         .andExpect(jsonPath("$.instance").value("/non-existent-resource"))
         .andExpect(jsonPath("$.timestamp").exists());
   }
@@ -56,7 +56,7 @@ class RestControllerAdviceTest {
         .andExpect(status().isBadRequest())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.status").value(400))
-        .andExpect(jsonPath("$.detail").value("Parameter 'id' should be of type 'UUID'"));
+        .andExpect(jsonPath("$.detail").value("Parameter value is invalid for type 'UUID'"));
   }
 
   @Test
