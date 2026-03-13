@@ -38,10 +38,8 @@ dependencies {
 
     implementation libs.mybatis.spring.boot.starter
 
-    implementation platform(libs.springdoc.openapi.bom)
-
-    compileOnly 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
-    developmentOnly 'org.springdoc:springdoc-openapi-starter-webmvc-ui'
+    compileOnly libs.springdoc.openapi.starter.webmvc.ui
+    developmentOnly libs.springdoc.openapi.starter.webmvc.ui
 
     runtimeOnly 'org.postgresql:postgresql'
 
