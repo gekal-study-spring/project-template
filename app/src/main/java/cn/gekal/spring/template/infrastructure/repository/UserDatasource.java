@@ -23,8 +23,18 @@ public class UserDatasource implements UserRepository {
   }
 
   @Override
+  public Optional<User> findByEmail(String email) {
+    return Optional.ofNullable(userMapper.findByEmail(email));
+  }
+
+  @Override
   public List<User> findAll() {
     return userMapper.findAll();
+  }
+
+  @Override
+  public void create(User user) {
+    userMapper.insert(user);
   }
 
   @Override

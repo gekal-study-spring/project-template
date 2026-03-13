@@ -62,10 +62,16 @@ public class UserService {
       throw new IllegalArgumentException("Invalid user data");
     }
 
-    User enrichedUser = userDomainService.enrichUser(user);
-    User savedUser = userRepository.save(enrichedUser);
+    if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+      throw new IllegalArgumentException("Email already exists");
+    }
 
-    return savedUser;
+    User enrichedUser = userDomainService.enrichUser(user);
+    userRepository.create(enrichedUser);
+
+    return userRepository
+        .findById(enrichedUser.getId())
+        .orElseThrow(() -> new UserNotFoundException("User created but not found"));
   }
 
   @Transactional

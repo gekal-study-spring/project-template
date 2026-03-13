@@ -18,6 +18,12 @@
     WHERE id = #{id,javaType=java.util.UUID,jdbcType=OTHER,typeHandler=cn.gekal.spring.template.infrastructure.config.UUIDTypeHandler}
   </select>
 
+  <select id="findByEmail" resultType="cn.gekal.spring.template.domain.model.User">
+    SELECT id, name, email, created_at, updated_at
+    FROM example.users
+    WHERE email = #{email}
+  </select>
+
   <select id="findAll" resultMap="UserResultMap">
     SELECT id, name, email, created_at, updated_at
     FROM example.users
