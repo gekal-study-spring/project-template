@@ -26,6 +26,10 @@ repositories {
 
 rewrite {
     activeRecipe("org.openrewrite.java.spring.boot4.UpgradeSpringBoot_4_0")
+
+    exclusion("**/build.gradle")
+    exclusion("**/settings.gradle")
+    exclusion("**/gradle/libs.versions.toml")
 }
 
 dependencies {
