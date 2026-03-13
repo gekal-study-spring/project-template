@@ -41,7 +41,7 @@ dependencies {
 
 shadowJar {
     mergeServiceFiles()
-    zip64 true
+    zip64 = true
     manifest {
         attributes 'Main-Class': 'org.flywaydb.commandline.Main',
                 'Implementation-Title': 'Database Migration Runner', // 任意のわかりやすい名前に変更できます

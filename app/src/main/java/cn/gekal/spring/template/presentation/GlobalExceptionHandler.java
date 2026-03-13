@@ -81,8 +81,7 @@ public class GlobalExceptionHandler {
       MethodArgumentTypeMismatchException ex, HttpServletRequest request) {
     assert ex.getRequiredType() != null;
     String message =
-        String.format(
-            "Parameter value is invalid for type '%s'", ex.getRequiredType().getSimpleName());
+        "Parameter value is invalid for type '%s'".formatted(ex.getRequiredType().getSimpleName());
     log.error("Type mismatch error for parameter '{}': {}", ex.getName(), message);
     return ErrorResponse.toEntity(HttpStatus.BAD_REQUEST, message, request);
   }

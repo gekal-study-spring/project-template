@@ -25,16 +25,16 @@ repositories {
 }
 
 rewrite {
-    activeRecipe("org.openrewrite.java.spring.boot3.UpgradeSpringBoot_4_0")
+    activeRecipe("org.openrewrite.java.spring.boot4.UpgradeSpringBoot_4_0")
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+    implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-resource-server'
 
     implementation libs.mybatis.spring.boot.starter
 
