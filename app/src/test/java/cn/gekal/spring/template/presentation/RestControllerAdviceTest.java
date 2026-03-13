@@ -41,6 +41,7 @@ class RestControllerAdviceTest {
         .andExpect(status().isNotFound())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.status").value(404))
+        .andExpect(jsonPath("$.type").value("about:blank"))
         .andExpect(jsonPath("$.title").value("Not Found"))
         .andExpect(jsonPath("$.detail").value("Resource not found"))
         .andExpect(jsonPath("$.instance").value("/non-existent-resource"))
@@ -54,6 +55,7 @@ class RestControllerAdviceTest {
         .andExpect(status().isNotFound())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.status").value(404))
+        .andExpect(jsonPath("$.type").value("about:blank"))
         .andExpect(jsonPath("$.title").value("Not Found"));
   }
 
@@ -64,6 +66,7 @@ class RestControllerAdviceTest {
         .andExpect(status().isBadRequest())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.status").value(400))
+        .andExpect(jsonPath("$.type").value("about:blank"))
         .andExpect(jsonPath("$.detail").value("Parameter value is invalid for type 'UUID'"));
   }
 
@@ -75,6 +78,7 @@ class RestControllerAdviceTest {
         .andExpect(status().isBadRequest())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.status").value(400))
+        .andExpect(jsonPath("$.type").value("about:blank"))
         .andExpect(jsonPath("$.detail").value("Validation failed"))
         .andExpect(jsonPath("$.errors").isArray())
         .andExpect(jsonPath("$.errors", hasSize(2)));
@@ -90,6 +94,7 @@ class RestControllerAdviceTest {
         .andExpect(status().isNotFound())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.status").value(404))
+        .andExpect(jsonPath("$.type").value("about:blank"))
         .andExpect(jsonPath("$.detail").value("User not found"));
   }
 }

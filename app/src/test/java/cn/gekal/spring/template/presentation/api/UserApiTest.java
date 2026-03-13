@@ -108,6 +108,7 @@ class UserApiTest {
         .perform(get("/api/users/{id}", testId))
         .andExpect(status().isNotFound())
         .andExpect(jsonPath("$.status", is(404)))
+        .andExpect(jsonPath("$.type", is("about:blank")))
         .andExpect(jsonPath("$.detail", is("User not found")));
 
     verify(userService).getUserById(testId);

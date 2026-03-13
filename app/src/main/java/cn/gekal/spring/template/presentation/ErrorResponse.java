@@ -2,21 +2,25 @@ package cn.gekal.spring.template.presentation;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.servlet.http.HttpServletRequest;
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-@Schema(description = "共通エラーレスポンス")
+@Schema(description = "共通エラーレスポンス (RFC 7807 準拠)")
 public class ErrorResponse {
 
-  @Schema(description = "HTTPステータスコード", example = "400")
-  private int status;
+  @Schema(description = "エラーのタイプを識別するURI", example = "about:blank")
+  private URI type;
 
   @Schema(description = "エラーの種類（RFC 7807準拠のタイトル）", example = "Bad Request")
   private String title;
 
-  @Schema(description = "詳細なエラーメッセージ", example = "Validation failed for object='userRequest'")
+  @Schema(description = "HTTPステータスコード", example = "400")
+  private int status;
+
+  @Schema(description = "詳細なエラーメッセージ", example = "Validation failed")
   private String detail;
 
   @Schema(description = "リクエストパス", example = "/api/users")
@@ -28,14 +32,17 @@ public class ErrorResponse {
   @Schema(description = "フィールドごとの詳細なバリデーションエラー")
   private List<FieldErrorDetail> errors;
 
-  public ErrorResponse() {}
+  public ErrorResponse() {
+    this.type = URI.create("about:blank");
+    this.timestamp = LocalDateTime.now();
+  }
 
   public ErrorResponse(int status, String title, String detail, String instance) {
+    this();
     this.status = status;
     this.title = title;
     this.detail = detail;
     this.instance = instance;
-    this.timestamp = LocalDateTime.now();
   }
 
   public ErrorResponse(
@@ -65,12 +72,12 @@ public class ErrorResponse {
     return ResponseEntity.status(status).body(of(status, detail, request, errors));
   }
 
-  public int getStatus() {
-    return status;
+  public URI getType() {
+    return type;
   }
 
-  public void setStatus(int status) {
-    this.status = status;
+  public void setType(URI type) {
+    this.type = type;
   }
 
   public String getTitle() {
@@ -79,6 +86,14 @@ public class ErrorResponse {
 
   public void setTitle(String title) {
     this.title = title;
+  }
+
+  public int getStatus() {
+    return status;
+  }
+
+  public void setStatus(int status) {
+    this.status = status;
   }
 
   public String getDetail() {
