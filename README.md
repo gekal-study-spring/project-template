@@ -1,19 +1,43 @@
 # Springプロジェクトの構造テンプレート
 
-このプロジェクトは、Spring Bootを使用したWebアプリケーションの構造テンプレートです。
+このプロジェクトは、Spring Bootを使用したモダンなWebアプリケーションの構造テンプレートです。
 レイヤードアーキテクチャを採用し、ドメイン駆動設計（DDD）の考え方を取り入れた構成になっています。
+マイクロサービスや小〜中規模のバックエンドアプリケーションの開発に最適です。
 
 ## 技術スタック
 
-- **Java**: 21+
-- **Framework**: Spring Boot 3.x
+- **Java**: 21
+- **Framework**: Spring Boot 4.0.2 (Spring Boot 3.4+相当)
 - **Security**: Spring Security (OAuth 2.0 Resource Server / JWT)
-- **Build Tool**: Gradle (Multi-module)
-- **Database**: PostgreSQL 17
-- **Persistence**: MyBatis
+- **Persistence**: MyBatis / PostgreSQL
 - **Migration**: Flyway (別モジュールとして分離)
+- **Resilience**: Spring Retry
+- **Documentation**: OpenAPI 3 / Swagger UI
 - **Container**: Docker, Docker Compose
-- **API Documentation**: OpenAPI 3 / Swagger UI
+- **Quality**: Spotless (Google Java Format)
+
+## アーキテクチャ詳細
+
+本プロジェクトは4層のレイヤードアーキテクチャを採用しています。
+
+### 1. プレゼンテーション層 (`presentation`)
+- 外部とのインターフェース（REST API）を担当します。
+- **主要な責務**: リクエストの受け取り、バリデーション、レスポンスの返却。
+- **主要な要素**: `Controller`, `Request/Response DTO`, `GlobalExceptionHandler`.
+
+### 2. アプリケーション層 (`application`)
+- ユースケースを実現するためのワークフローを制御します。
+- **主要な責務**: トランザクション管理、ドメインオブジェクトのオーケストレーション。
+- **特徴**: データベース接続エラー等に対する再試行（`@Retryable`）を実装しています。
+
+### 3. ドメイン層 (`domain`)
+- ビジネスロジックとドメイン知識を保持します。
+- **主要な要素**: `Model (Entity)`, `Repository Interface`, `Domain Service`, `Domain Exception`.
+- 他のレイヤーに依存しない純粋なビジネスロジックを記述します。
+
+### 4. インフラストラクチャ層 (`infrastructure`)
+- 技術的な詳細（DBアクセス、外部API連携、設定等）を実装します。
+- **主要な要素**: `Repository Implementation (Datasource)`, `MyBatis Mapper`, `Security Config`.
 
 ## ディレクトリ構成
 
@@ -29,8 +53,8 @@
 │   └── src/main/resources/       # 設定、MyBatis Mapper、JWT公開鍵
 ├── migration/           # データベースマイグレーションモジュール（Flyway）
 │   ├── src/main/resources/db/migration/
-│   │   ├── schema/               # テーブル定義スクリプト
-│   │   └── data/                 # 初期データ・テストデータ（環境別）
+│   │   ├── schema/               # テーブル定義スクリプト (DDL)
+│   │   └── data/                 # 環境別データ・テストデータ (DML)
 ├── database/            # データベース初期化用スクリプト・Dockerfile
 ├── compose.yaml         # Docker Compose設定
 ├── Dockerfile-app       # アプリケーション用Dockerfile
@@ -43,66 +67,59 @@
 ## セットアップと起動方法
 
 ### 前提条件
+- Docker / Docker Compose
+- Java 21 (ローカル実行時)
 
-- Docker / Docker Compose がインストールされていること
-- Java 21 がインストールされていること (ローカル実行時)
-
-### 開発環境の起動（Docker Compose）
-
-以下のコマンドでデータベースとアプリケーションを起動できます。
+### クイックスタート (Docker)
+以下のコマンドでデータベース、マイグレーション、アプリケーションがすべて起動します。
 
 ```bash
 docker compose up --build
 ```
 
-- **API**: `http://localhost:18080`
+- **APIベースURL**: `http://localhost:18080`
 - **Swagger UI**: `http://localhost:18080/swagger-ui.html`
-- **Health Check**: `http://localhost:18080/actuator/health`
-- **Database**: `localhost:15432` (User: `myuser`, Password: `secret`, DB: `template`)
+- **Actuator**: `http://localhost:18080/actuator`
+- **DB接続**: `localhost:15432` (User: `myuser`, Password: `secret`, DB: `template`)
+
+## 開発ガイド
 
 ### 認証・認可
+Spring Securityを使用したJWTによる認可を実装しています。
 
-このテンプレートは、Spring Security を使用した JWT による認証をサポートしています。
-
-- **公開鍵/秘密鍵**: `app/src/main/resources/jwt/` に配置されています。
-- **JWTの生成**: `generate-jwt.sh` を使用して、テスト用の JWT を生成できます。
-  ```bash
-  ./generate-jwt.sh
-  ```
-  生成されたトークンを `Authorization: Bearer <token>` ヘッダーにセットして API を呼び出してください。
-
-### ローカルでの実行
-
-1. **データベースの起動**
-   ```bash
-   docker compose up postgres -d
-   ```
-
-2. **マイグレーションの実行**
-   ```bash
-   ./gradlew migration:flywayMigrate
-   ```
-
-3. **アプリケーションの起動**
-   ```bash
-   ./gradlew app:bootRun
-   ```
-
-## 開発フロー
+- **スコープ**: `users::read`, `users::create`, `users::update`, `users::delete` のスコープに基づいてAPIのアクセス制御を行っています。
+- **テスト用JWT**: `./generate-jwt.sh` を実行してトークンを取得し、`Authorization: Bearer <token>` ヘッダーで使用してください。
 
 ### データベースマイグレーション
+`migration` モジュールで一元管理しています。
 
-テーブル構成の変更やデータの追加は `migration` モジュールの SQL ファイルを編集して行います。
+- **新しいテーブルの追加**: `migration/src/main/resources/db/migration/schema/` に新しい SQL ファイルを追加します。
+- **初期データの追加**: `migration/src/main/resources/db/migration/data/dev/` に追加します。
 
-- `migration/src/main/resources/db/migration/schema/`: DDL (テーブル定義)
-- `migration/src/main/resources/db/migration/data/`: DML (環境別データ)
+### 耐障害性 (Resilience)
+`UserService` には `@Retryable` が設定されており、一時的なデータベース接続エラー時に自動的にリトライを行います。
 
-マイグレーションの詳細については `migration/README.md` を参照してください。
+### AWS API Gateway 統合
+本テンプレートは、AWS API Gateway との統合を容易にするための機能を備えています。
+- **OpenAPI Extensions**: `OpenApiConfig` により、Swagger UI (v3/api-docs) からエクスポートされる OpenAPI 定義に `x-amazon-apigateway-integration` 拡張が自動的に付与されます。
+- **CORS プレフライト**: API Gateway 側での CORS 処理を自動化するための Mock 統合設定も OpenAPI 定義に含まれます。
+- **設定項目**: `application.yaml` の `aws.apigateway` セクションで VPC Link や ALB の情報を設定可能です。
 
-### APIのテスト
+### コード規約
+Gradleの `Spotless` プラグインを使用しています。コミット前にフォーマットを確認してください。
 
-`apis.rest` ファイルを使用して、VS Code の REST Client 等で API の動作確認が可能です。
+```bash
+./gradlew spotlessApply
+```
 
-### 更新履歴・アップグレード
+## テスト
 
-依存関係の更新などは `upgrade.md` に記載されています。
+JUnit 5 を使用して各レイヤーのテストを実装しています。
+
+```bash
+./gradlew test
+```
+
+- **Unit Test**: ドメイン層・アプリケーション層のロジック検証
+- **Repository Test**: MyBatisのSQL検証 (`@MybatisTest` を使用)
+- **API Test**: `MockMvc` を使用したエンドポイント検証
