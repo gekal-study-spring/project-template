@@ -7,8 +7,8 @@
     ":label(renovate)",
     ":timezone(Asia/Tokyo)",
     ":separateMajorReleases",
-    ":prHourlyLimit10",
-    ":prConcurrentLimit20"
+    "prHourlyLimit10",
+    "prConcurrentLimit20"
   ],
   "schedule": ["at any time"],
   "rangeStrategy": "update-lockfile",
@@ -16,7 +16,7 @@
   "enabledManagers": ["gradle", "github-actions", "dockerfile"],
   "gradle": {
     "enabled": true,
-    "fileMatch": [
+    "managerFilePatterns": [
       "(^|/)build\\.gradle(?:\\.kts)?$",
       "(^|/)gradle/libs\\.versions\\.toml$"
     ]
