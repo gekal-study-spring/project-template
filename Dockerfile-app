@@ -6,7 +6,7 @@
 # -----------------------------------------------------------------------------
 # Stage 1: Build the application
 # -----------------------------------------------------------------------------
-FROM eclipse-temurin:21-jdk AS builder
+FROM eclipse-temurin:25.0.2_10-jdk AS builder
 
 WORKDIR /app
 
@@ -30,7 +30,7 @@ RUN --mount=type=cache,target=/root/.gradle ./gradlew app:bootJar --no-daemon
 # -----------------------------------------------------------------------------
 # Stage 2: Extract Layers
 # -----------------------------------------------------------------------------
-FROM eclipse-temurin:21-jdk AS extractor
+FROM eclipse-temurin:25.0.2_10-jdk AS extractor
 WORKDIR /builder
 
 COPY --from=builder /app/app/build/libs/*.jar application.jar
@@ -40,7 +40,7 @@ RUN java -Djarmode=tools -jar application.jar extract --layers --destination ext
 # -----------------------------------------------------------------------------
 # Stage 3: Runtime Image
 # -----------------------------------------------------------------------------
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:25.0.2_10-jre
 
 RUN groupadd -r appuser && useradd -r -g appuser appuser  \
     && mkdir -p /app && chown -R appuser:appuser /app

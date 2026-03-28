@@ -6,7 +6,7 @@
 # -----------------------------------------------------------------------------
 # Stage 1: Build the application
 # -----------------------------------------------------------------------------
-FROM eclipse-temurin:21-jdk AS builder
+FROM eclipse-temurin:25.0.2_10-jdk AS builder
 
 WORKDIR /app
 
@@ -30,7 +30,7 @@ RUN --mount=type=cache,target=/root/.gradle ./gradlew migration:shadowJar --no-d
 # -----------------------------------------------------------------------------
 # Stage 2: Runtime Image
 # -----------------------------------------------------------------------------
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:25.0.2_10-jre
 
 RUN groupadd -r appuser && useradd -r -g appuser appuser  \
     && mkdir -p /app && chown -R appuser:appuser /app
