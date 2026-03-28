@@ -14,9 +14,16 @@
   "rangeStrategy": "update-lockfile",
   "postUpdateOptions": ["gradleUpdate"],
   "enabledManagers": ["gradle", "github-actions", "dockerfile"],
+  "gradle": {
+    "enabled": true,
+    "fileMatch": [
+      "(^|/)build\\.gradle(?:\\.kts)?$",
+      "(^|/)gradle/libs\\.versions\\.toml$"
+    ]
+  },
   "packageRules": [
     {
-      "description": "Version Catalog (libs.versions.toml) 内の Spring Boot と MyBatis を毎日チェック",
+      "description": "Spring BootとMyBatisをグループ化",
       "matchManagers": ["gradle"],
       "matchPackagePrefixes": [
         "org.springframework.boot",
@@ -27,7 +34,7 @@
       "automerge": true
     },
     {
-      "description": "その他の依存関係もマイナー・パッチは自動マージ",
+      "description": "その他の依存関係のマイナー・パッチを自動マージ",
       "matchManagers": ["gradle", "github-actions", "dockerfile"],
       "excludePackagePrefixes": ["org.springframework.boot", "org.mybatis.spring.boot"],
       "groupName": "all non-major dependencies",
