@@ -4,10 +4,11 @@
     "config:recommended",
     ":dependencyDashboard",
     ":semanticCommits",
-    ":label(renovate)",
     ":timezone(Asia/Tokyo)",
     ":separateMajorReleases"
   ],
+  "labels": ["renovate"],
+  "addLabels": ["renovate"],
   "dryRun": null,
   "onboarding": false,
   "schedule": ["at any time"],
