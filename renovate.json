@@ -8,6 +8,8 @@
     ":timezone(Asia/Tokyo)",
     ":separateMajorReleases"
   ],
+  "dryRun": null,
+  "onboarding": false,
   "schedule": ["at any time"],
   "rangeStrategy": "update-lockfile",
   "postUpdateOptions": ["gradleUpdate"],
@@ -34,7 +36,10 @@
     {
       "description": "その他の依存関係のマイナー・パッチを自動マージ",
       "matchManagers": ["gradle", "github-actions", "dockerfile"],
-      "excludePackagePrefixes": ["org.springframework.boot", "org.mybatis.spring.boot"],
+      "excludePackagePrefixes": [
+        "org.springframework.boot",
+        "org.mybatis.spring.boot"
+      ],
       "groupName": "all non-major dependencies",
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true
