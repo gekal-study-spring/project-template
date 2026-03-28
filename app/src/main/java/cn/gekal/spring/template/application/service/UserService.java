@@ -67,11 +67,7 @@ public class UserService {
     }
 
     User enrichedUser = userDomainService.enrichUser(user);
-    userRepository.create(enrichedUser);
-
-    return userRepository
-        .findById(enrichedUser.getId())
-        .orElseThrow(() -> new UserNotFoundException("User created but not found"));
+    return userRepository.save(enrichedUser);
   }
 
   @Transactional
