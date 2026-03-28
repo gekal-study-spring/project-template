@@ -16,19 +16,15 @@
   "postUpdateOptions": ["gradleUpdate"],
   "enabledManagers": ["gradle", "github-actions", "dockerfile"],
   "gradle": {
-    "enabled": true,
-    "managerFilePatterns": [
-      "(^|/)build\\.gradle(?:\\.kts)?$",
-      "(^|/)gradle/libs\\.versions\\.toml$"
-    ]
+    "enabled": true
   },
   "packageRules": [
     {
       "description": "Spring BootとMyBatisをグループ化",
       "matchManagers": ["gradle"],
-      "matchPackagePrefixes": [
-        "org.springframework.boot",
-        "org.mybatis.spring.boot"
+      "matchPackageNames": [
+        "org.springframework.boot{/,}**",
+        "org.mybatis.spring.boot{/,}**"
       ],
       "groupName": "spring stack",
       "matchUpdateTypes": ["minor", "patch"],
@@ -37,9 +33,9 @@
     {
       "description": "その他の依存関係のマイナー・パッチを自動マージ",
       "matchManagers": ["gradle", "github-actions", "dockerfile"],
-      "excludePackagePrefixes": [
-        "org.springframework.boot",
-        "org.mybatis.spring.boot"
+      "matchPackageNames": [
+        "!org.springframework.boot{/,}**",
+        "!org.mybatis.spring.boot{/,}**"
       ],
       "groupName": "all non-major dependencies",
       "matchUpdateTypes": ["minor", "patch"],
