@@ -7,38 +7,60 @@
     ":timezone(Asia/Tokyo)",
     ":separateMajorReleases"
   ],
-  "labels": ["renovate"],
-  "addLabels": ["renovate"],
-  "dryRun": null,
-  "onboarding": false,
-  "schedule": ["at any time"],
+  "labels": [
+    "renovate"
+  ],
+  "addLabels": [
+    "renovate"
+  ],
+  "schedule": [
+    "at any time"
+  ],
   "rangeStrategy": "update-lockfile",
-  "postUpdateOptions": ["gradleUpdate"],
-  "enabledManagers": ["gradle", "github-actions", "dockerfile"],
+  "postUpdateOptions": [
+    "gradleUpdate"
+  ],
+  "enabledManagers": [
+    "gradle",
+    "github-actions",
+    "dockerfile"
+  ],
   "gradle": {
     "enabled": true
   },
   "packageRules": [
     {
       "description": "Spring BootとMyBatisをグループ化",
-      "matchManagers": ["gradle"],
+      "matchManagers": [
+        "gradle"
+      ],
       "matchPackageNames": [
         "org.springframework.boot{/,}**",
         "org.mybatis.spring.boot{/,}**"
       ],
       "groupName": "spring stack",
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "automerge": true
     },
     {
       "description": "その他の依存関係のマイナー・パッチを自動マージ",
-      "matchManagers": ["gradle", "github-actions", "dockerfile"],
+      "matchManagers": [
+        "gradle",
+        "github-actions",
+        "dockerfile"
+      ],
       "matchPackageNames": [
         "!org.springframework.boot{/,}**",
         "!org.mybatis.spring.boot{/,}**"
       ],
       "groupName": "all non-major dependencies",
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "automerge": true
     }
   ],
