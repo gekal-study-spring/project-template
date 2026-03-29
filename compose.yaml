@@ -6,7 +6,7 @@ x-db-config: &db-config
 services:
   postgres:
     container_name: project-template-postgres
-    image: 'gekal/postgres:15.10-bullseye'
+    image: 'gekal/postgres:18.3-bookworm'
     build:
       dockerfile: database/Dockerfile
       context: .
