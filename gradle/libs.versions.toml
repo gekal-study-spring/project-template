@@ -1,16 +1,16 @@
 [versions]
-openrewrite = "7.29.0"
-rewrite-spring = "6.28.1"
+openrewrite = "7.30.0"
+rewrite-spring = "6.29.0"
 shadow = "9.4.1"
 springframework-boot = "4.0.5"
 dependency-management = "1.1.7"
 spotless = "8.4.0"
 mybatis = "4.0.1"
 postgresql = "42.7.10"
-flyway = "12.2.0"
+flyway = "12.4.0"
 jansi = "2.4.3"
-jackson = "3.1.1"
-springdoc-openapi = "3.0.2"
+jackson = "3.1.2"
+springdoc-openapi = "3.0.3"
 
 [libraries]
 rewrite-spring = { group = "org.openrewrite.recipe", name = "rewrite-spring", version.ref = "rewrite-spring" }
