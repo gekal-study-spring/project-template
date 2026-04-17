@@ -1,6 +1,6 @@
 [versions]
 openrewrite = "7.30.0"
-rewrite-spring = "6.29.0"
+rewrite-spring = "6.29.2"
 shadow = "9.4.1"
 springframework-boot = "4.0.5"
 dependency-management = "1.1.7"
