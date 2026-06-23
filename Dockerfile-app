@@ -6,7 +6,7 @@
 # -----------------------------------------------------------------------------
 # Stage 1: Build the application
 # -----------------------------------------------------------------------------
-FROM eclipse-temurin:25.0.2_10-jdk AS builder
+FROM eclipse-temurin:21-jdk-noble AS builder
 
 WORKDIR /app
 
@@ -30,7 +30,7 @@ RUN --mount=type=cache,target=/root/.gradle ./gradlew app:bootJar --no-daemon
 # -----------------------------------------------------------------------------
 # Stage 2: Extract Layers
 # -----------------------------------------------------------------------------
-FROM eclipse-temurin:25.0.2_10-jdk AS extractor
+FROM eclipse-temurin:21-jdk-noble AS extractor
 WORKDIR /builder
 
 COPY --from=builder /app/app/build/libs/*.jar application.jar
@@ -40,9 +40,14 @@ RUN java -Djarmode=tools -jar application.jar extract --layers --destination ext
 # -----------------------------------------------------------------------------
 # Stage 3: Runtime Image
 # -----------------------------------------------------------------------------
-FROM eclipse-temurin:25.0.2_10-jre
+FROM eclipse-temurin:21-jre-noble
 
-RUN groupadd -r appuser && useradd -r -g appuser appuser  \
+# OSパッケージを最新化して攻撃対象領域を減らす
+# (Ubuntu 24.04 LTS(noble)ベース。rolling な無印タグと違い pebble を含まず、
+#  OpenSSL 等の OS パッケージCVEは apt upgrade で解消される)
+RUN apt-get update && apt-get upgrade -y \
+    && rm -rf /var/lib/apt/lists/* \
+    && groupadd -r appuser && useradd -r -g appuser appuser \
     && mkdir -p /app && chown -R appuser:appuser /app
 
 WORKDIR /app
