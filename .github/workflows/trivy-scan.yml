@@ -1,0 +1,40 @@
+name: Trivy Image Scan
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ "**" ]
+  workflow_dispatch:
+
+jobs:
+  build-and-scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dockerfile: Dockerfile-app
+            image: project-template-app
+          - dockerfile: Dockerfile-migration
+            image: project-template-migration
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Build image
+        run: |
+          image_tag="${{ matrix.image }}:ci"
+          docker build -f "${{ matrix.dockerfile }}" -t "${image_tag}" .
+          echo "IMAGE_TAG=${image_tag}" >> "$GITHUB_ENV"
+
+      - name: Scan image with Trivy
+        uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: ${{ env.IMAGE_TAG }}
+          format: table
+          exit-code: '1'
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
