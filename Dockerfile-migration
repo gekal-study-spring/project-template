@@ -6,7 +6,7 @@
 # -----------------------------------------------------------------------------
 # Stage 1: Build the application
 # -----------------------------------------------------------------------------
-FROM eclipse-temurin:21-jdk AS builder
+FROM eclipse-temurin:21-jdk-noble AS builder
 
 WORKDIR /app
 
@@ -30,12 +30,12 @@ RUN --mount=type=cache,target=/root/.gradle ./gradlew migration:shadowJar --no-d
 # -----------------------------------------------------------------------------
 # Stage 2: Runtime Image
 # -----------------------------------------------------------------------------
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:21-jre-noble
 
-# OSパッケージを最新化し、未使用の pebble(CVE を含む Go バイナリ)を削除して
-# 攻撃対象領域を減らす
+# OSパッケージを最新化して攻撃対象領域を減らす
+# (Ubuntu 24.04 LTS(noble)ベース。rolling な無印タグと違い pebble を含まず、
+#  OpenSSL 等の OS パッケージCVEは apt upgrade で解消される)
 RUN apt-get update && apt-get upgrade -y \
-    && rm -f /usr/bin/pebble \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd -r appuser && useradd -r -g appuser appuser \
     && mkdir -p /app && chown -R appuser:appuser /app
