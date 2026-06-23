@@ -42,7 +42,12 @@ RUN java -Djarmode=tools -jar application.jar extract --layers --destination ext
 # -----------------------------------------------------------------------------
 FROM eclipse-temurin:21-jre
 
-RUN groupadd -r appuser && useradd -r -g appuser appuser  \
+# OSパッケージを最新化し、未使用の pebble(CVE を含む Go バイナリ)を削除して
+# 攻撃対象領域を減らす
+RUN apt-get update && apt-get upgrade -y \
+    && rm -f /usr/bin/pebble \
+    && rm -rf /var/lib/apt/lists/* \
+    && groupadd -r appuser && useradd -r -g appuser appuser \
     && mkdir -p /app && chown -R appuser:appuser /app
 
 WORKDIR /app
