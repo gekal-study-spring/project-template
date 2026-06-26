@@ -1,4 +1,4 @@
-name: Trivy Image Scan
+name: Container Image Scan
 
 on:
   push:
@@ -8,16 +8,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-scan:
+  scan:
+    name: scan (${{ matrix.name }})
     runs-on: ubuntu-latest
     timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: Dockerfile-app
+          - name: app
+            dockerfile: Dockerfile-app
             image: project-template-app
-          - dockerfile: Dockerfile-migration
+          - name: migration
+            dockerfile: Dockerfile-migration
             image: project-template-migration
 
     steps:
