@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# GitHub Actions(.github/workflows/trivy-scan.yml)と同じ内容をローカルで実行する。
+# GitHub Actions(.github/workflows/container-image-scan.yml)と同じ内容をローカルで実行する。
 # Dockerfile-app / Dockerfile-migration をビルドし、Trivy でスキャンする。
 #
 # 使い方:
