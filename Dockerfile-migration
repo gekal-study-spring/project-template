@@ -44,7 +44,6 @@ WORKDIR /app
 
 COPY --from=builder /app/migration/build/libs/*.jar migration.jar
 COPY --from=builder /app/migration/config/flyway.toml config/flyway.toml
-COPY --from=builder --chmod=755 /app/migration/docker-entrypoint.sh docker-entrypoint.sh
 
 USER appuser
 
@@ -54,5 +53,5 @@ ENV DATASOURCE_USERNAME=""
 ENV DATASOURCE_PASSWORD=""
 ENV ENV="dev"
 
-ENTRYPOINT ["/app/docker-entrypoint.sh"]
+ENTRYPOINT ["sh", "-c", "exec java ${JAVA_OPTS} -jar /app/migration.jar -environment=\"${ENV}\" -loggers=slf4j \"$@\"", "--"]
 CMD ["migrate"]
