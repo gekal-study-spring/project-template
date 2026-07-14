@@ -54,7 +54,8 @@ java -Dflyway.skipCheckForUpdate=true \
   -jar migration/build/libs/migration-1.0.1-all.jar \
   -environment=${ENV} \
   -loggers=console \
-  clean
+  info
+# 使用可能コマンド:  migrate / info / validate / repair / clean
 )
 ```
 
