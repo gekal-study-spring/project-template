@@ -43,7 +43,7 @@ RUN apt-get update && apt-get upgrade -y \
 WORKDIR /app
 
 COPY --from=builder /app/migration/build/libs/*.jar migration.jar
-COPY --from=builder /app/migration/config config
+COPY --from=builder /app/migration/config/flyway.toml config/flyway.toml
 
 USER appuser
 
@@ -53,4 +53,4 @@ ENV DATASOURCE_USERNAME=""
 ENV DATASOURCE_PASSWORD=""
 ENV ENV="dev"
 
-ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app/migration.jar -configFiles=/app/config/${ENV}/flyway.toml migrate"]
+ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app/migration.jar -configFiles=/app/config/flyway.toml -environment=${ENV} migrate"]
