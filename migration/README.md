@@ -73,6 +73,17 @@ docker compose run --rm migration info
 docker compose run --rm migration validate
 ```
 
+### 3. Shadow JARの脆弱性スキャン
+
+MigrationのShadow JARをビルドし、Trivyで依存ライブラリの脆弱性をスキャンします。
+
+```bash
+./migration/build-and-scan.sh
+```
+
+修正可能なHIGHまたはCRITICALの脆弱性が検出された場合、終了コード`1`で終了します。
+実行にはTrivyが必要です（macOSでは`brew install trivy`でインストールできます）。
+
 ## 注意事項
 
 - **バージョニング**: SQL ファイルの名前は Flyway の命名規則（`V<Version>__<Description>.sql`）に従ってください。
