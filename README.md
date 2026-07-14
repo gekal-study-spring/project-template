@@ -123,3 +123,15 @@ JUnit 5 を使用して各レイヤーのテストを実装しています。
 - **Unit Test**: ドメイン層・アプリケーション層のロジック検証
 - **Repository Test**: MyBatisのSQL検証 (`@MybatisTest` を使用)
 - **API Test**: `MockMvc` を使用したエンドポイント検証
+
+## JARの脆弱性スキャン
+
+各モジュールの実行JARをビルドし、Trivyで依存ライブラリの脆弱性をスキャンします。
+
+```bash
+./app/build-and-scan.sh
+./migration/build-and-scan.sh
+```
+
+修正可能なHIGHまたはCRITICALの脆弱性が検出された場合、終了コード`1`で終了します。
+実行にはTrivyが必要です（macOSでは`brew install trivy`でインストールできます）。
