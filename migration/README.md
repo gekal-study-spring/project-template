@@ -62,7 +62,8 @@ java -Dflyway.skipCheckForUpdate=true \
 実行時に `DATASOURCE_URL`、`DATASOURCE_USERNAME`、`DATASOURCE_PASSWORD`、`FLYWAY_CONFIG_FILES`、`ENV` を環境変数として設定してください。
 `ENV` の値は `-environment` パラメータとしてFlywayへ渡されます。
 上記のローカル実行では、読みやすいコンソール形式でログを出力します。
-Docker環境では、LogbackのLogstash形式で標準出力へ出力します。
+DockerイメージはデフォルトでLogbackのLogstash形式を使用します。
+`compose.yaml`から実行する場合は、`FLYWAY_LOGGERS=console`で読みやすいコンソール形式へ上書きします。
 
 Dockerではデフォルトで `migrate` を実行します。別のFlywayコマンドを実行する場合は、コマンドを引数として指定します。
 
