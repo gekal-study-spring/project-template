@@ -32,6 +32,8 @@ dependencies {
     implementation libs.jansi
     implementation libs.jackson.dataformat.toml
     implementation libs.jackson.dataformat.xml
+    implementation libs.logback.classic
+    implementation libs.logstash.logback.encoder
 
     implementation libs.flyway.core
 

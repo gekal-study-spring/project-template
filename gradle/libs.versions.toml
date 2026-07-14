@@ -10,6 +10,8 @@ postgresql = "42.7.11"
 flyway = "12.4.0"
 jansi = "2.4.3"
 jackson = "3.1.4"
+logback = "1.5.38"
+logstash-logback-encoder = "9.0"
 springdoc-openapi = "3.0.3"
 
 [libraries]
@@ -21,6 +23,8 @@ flyway-commandline = { group = "org.flywaydb", name = "flyway-commandline", vers
 jansi = { group = "org.fusesource.jansi", name = "jansi", version.ref = "jansi" }
 jackson-dataformat-toml = { group = "tools.jackson.dataformat", name = "jackson-dataformat-toml", version.ref = "jackson" }
 jackson-dataformat-xml = { group = "tools.jackson.dataformat", name = "jackson-dataformat-xml", version.ref = "jackson" }
+logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
+logstash-logback-encoder = { group = "net.logstash.logback", name = "logstash-logback-encoder", version.ref = "logstash-logback-encoder" }
 flyway-database-postgresql = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }
 springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-openapi" }
 # used by test

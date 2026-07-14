@@ -53,4 +53,4 @@ ENV DATASOURCE_USERNAME=""
 ENV DATASOURCE_PASSWORD=""
 ENV ENV="dev"
 
-ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app/migration.jar -environment=${ENV} -outputType=json -outputLogsInJson=true migrate"]
+ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app/migration.jar -environment=${ENV} -loggers=slf4j migrate"]
