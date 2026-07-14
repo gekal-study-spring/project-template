@@ -51,14 +51,15 @@ export ENV=dev
 java -Dflyway.skipCheckForUpdate=true \
   -jar migration/build/libs/migration-1.0.1-all.jar \
   -environment=${ENV} \
-  -loggers=slf4j \
+  -loggers=console \
   migrate
 ```
 
 接続情報と環境別のマイグレーションパスは `config/flyway.toml` から読み込みます。
 実行時に `DATASOURCE_URL`、`DATASOURCE_USERNAME`、`DATASOURCE_PASSWORD`、`FLYWAY_CONFIG_FILES`、`ENV` を環境変数として設定してください。
 `ENV` の値は起動時にFlywayの `flyway_environment` として設定されます。
-標準ログはLogbackのLogstash形式で標準出力へ出力します。
+上記のローカル実行では、読みやすいコンソール形式でログを出力します。
+Docker環境では、LogbackのLogstash形式で標準出力へ出力します。
 
 ## 注意事項
 
