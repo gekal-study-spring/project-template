@@ -63,3 +63,7 @@ flyway {
             "classpath:db/migration/data/${System.getenv('ENV') ?: 'dev'}"
     ]
 }
+
+tasks.matching { it.name.startsWith('flyway') }.configureEach {
+    dependsOn tasks.named('processResources')
+}
