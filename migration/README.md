@@ -49,7 +49,6 @@ export FLYWAY_CONFIG_FILES=migration/config/flyway.toml
 export ENV=dev
 
 java -Dflyway.skipCheckForUpdate=true \
-  --enable-native-access=ALL-UNNAMED \
   -jar migration/build/libs/migration-1.0.1-all.jar \
   -environment=${ENV} \
   migrate
