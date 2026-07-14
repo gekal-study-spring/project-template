@@ -40,6 +40,7 @@ dependencies {
 }
 
 shadowJar {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
     mergeServiceFiles()
     zip64 = true
     manifest {
