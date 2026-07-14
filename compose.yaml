@@ -29,6 +29,7 @@ services:
       dockerfile: Dockerfile-migration
       context: .
     environment:
+      FLYWAY_CONFIG_FILES: /app/config/flyway.toml
       ENV: &env dev
       DATASOURCE_URL: &db-url jdbc:postgresql://postgres:5432/template
       DATASOURCE_USERNAME: *db-user

@@ -53,4 +53,4 @@ ENV DATASOURCE_USERNAME=""
 ENV DATASOURCE_PASSWORD=""
 ENV ENV="dev"
 
-ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app/migration.jar -configFiles=/app/config/flyway.toml -environment=${ENV} migrate"]
+ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -jar /app/migration.jar -environment=${ENV} migrate"]
