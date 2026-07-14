@@ -64,6 +64,13 @@ java -Dflyway.skipCheckForUpdate=true \
 上記のローカル実行では、読みやすいコンソール形式でログを出力します。
 Docker環境では、LogbackのLogstash形式で標準出力へ出力します。
 
+Dockerではデフォルトで `migrate` を実行します。別のFlywayコマンドを実行する場合は、コマンドを引数として指定します。
+
+```bash
+docker compose run --rm migration info
+docker compose run --rm migration validate
+```
+
 ## 注意事項
 
 - **バージョニング**: SQL ファイルの名前は Flyway の命名規則（`V<Version>__<Description>.sql`）に従ってください。
