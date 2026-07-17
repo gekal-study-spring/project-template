@@ -1,39 +1,64 @@
 [versions]
-openrewrite = "7.30.0"
-rewrite-spring = "6.29.2"
-shadow = "9.4.1"
-springframework-boot = "4.0.7"
+# Build tools
 dependency-management = "1.1.7"
+openrewrite = "7.30.0"
+shadow = "9.4.1"
 spotless = "8.4.0"
+springframework-boot = "4.0.7"
+
+# Application
 mybatis = "4.0.1"
-postgresql = "42.7.11"
-flyway = "12.4.0"
-jansi = "2.4.3"
-jackson = "3.1.4"
-logback = "1.5.38"
-logstash-logback-encoder = "9.0"
 springdoc-openapi = "3.0.3"
 
+# Database and migration
+flyway = "12.4.0"
+postgresql = "42.7.11"
+
+# Console
+jansi = "2.4.3"
+
+# Data formats
+jackson = "3.1.4"
+
+# Logging
+logback = "1.5.38"
+logstash-logback-encoder = "9.0"
+
+# OpenRewrite
+rewrite-spring = "6.29.2"
+
 [libraries]
-rewrite-spring = { group = "org.openrewrite.recipe", name = "rewrite-spring", version.ref = "rewrite-spring" }
+# Application
 mybatis-spring-boot-starter = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-starter", version.ref = "mybatis" }
-postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
-flyway-core = { group = "org.flywaydb", name = "flyway-core", version.ref = "flyway" }
+springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-openapi" }
+
+# Database and migration
 flyway-commandline = { group = "org.flywaydb", name = "flyway-commandline", version.ref = "flyway" }
+flyway-core = { group = "org.flywaydb", name = "flyway-core", version.ref = "flyway" }
+flyway-database-postgresql = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }
+postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
+
+# Console
 jansi = { group = "org.fusesource.jansi", name = "jansi", version.ref = "jansi" }
+
+# Data formats
 jackson-dataformat-toml = { group = "tools.jackson.dataformat", name = "jackson-dataformat-toml", version.ref = "jackson" }
 jackson-dataformat-xml = { group = "tools.jackson.dataformat", name = "jackson-dataformat-xml", version.ref = "jackson" }
+
+# Logging
 logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
 logstash-logback-encoder = { group = "net.logstash.logback", name = "logstash-logback-encoder", version.ref = "logstash-logback-encoder" }
-flyway-database-postgresql = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }
-springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-openapi" }
-# used by test
+
+# OpenRewrite
+rewrite-spring = { group = "org.openrewrite.recipe", name = "rewrite-spring", version.ref = "rewrite-spring" }
+
+# Test
 mybatis-spring-boot-starter-test = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-starter-test", version.ref = "mybatis" }
 
 [plugins]
+dependency-management = { id = "io.spring.dependency-management", version.ref = "dependency-management" }
+flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
 openrewrite = { id = "org.openrewrite.rewrite", version.ref = "openrewrite" }
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
-springframework-boot = { id = "org.springframework.boot", version.ref = "springframework-boot" }
-dependency-management = { id = "io.spring.dependency-management", version.ref = "dependency-management" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
-flyway = { id = "org.flywaydb.flyway", version.ref = "flyway" }
+springframework-boot = { id = "org.springframework.boot", version.ref = "springframework-boot" }
