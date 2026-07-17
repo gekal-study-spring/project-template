@@ -17,17 +17,16 @@ postgresql = "42.7.11"
 # Console
 jansi = "2.4.3"
 
-# Data formats
-jackson = "3.1.4"
-
 # Logging
-logback = "1.5.38"
 logstash-logback-encoder = "9.0"
 
 # OpenRewrite
 rewrite-spring = "6.29.2"
 
 [libraries]
+# Platforms
+spring-boot-dependencies = { group = "org.springframework.boot", name = "spring-boot-dependencies", version.ref = "springframework-boot" }
+
 # Application
 mybatis-spring-boot-starter = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-starter", version.ref = "mybatis" }
 springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-openapi" }
@@ -42,11 +41,11 @@ postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "pos
 jansi = { group = "org.fusesource.jansi", name = "jansi", version.ref = "jansi" }
 
 # Data formats
-jackson-dataformat-toml = { group = "tools.jackson.dataformat", name = "jackson-dataformat-toml", version.ref = "jackson" }
-jackson-dataformat-xml = { group = "tools.jackson.dataformat", name = "jackson-dataformat-xml", version.ref = "jackson" }
+jackson-dataformat-toml = { group = "tools.jackson.dataformat", name = "jackson-dataformat-toml" }
+jackson-dataformat-xml = { group = "tools.jackson.dataformat", name = "jackson-dataformat-xml" }
 
 # Logging
-logback-classic = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
+logback-classic = { group = "ch.qos.logback", name = "logback-classic" }
 logstash-logback-encoder = { group = "net.logstash.logback", name = "logstash-logback-encoder", version.ref = "logstash-logback-encoder" }
 
 # OpenRewrite
