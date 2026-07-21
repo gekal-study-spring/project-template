@@ -1,21 +1,10 @@
-[environments.dev]
+[environments]
 url = "${env.DATASOURCE_URL}"
 user = "${env.DATASOURCE_USERNAME}"
 password = "${env.DATASOURCE_PASSWORD}"
 
-[environments.dev.flyway]
+[environments.flyway]
 locations = [
     "classpath:db/migration/schema",
-    "classpath:db/migration/data/dev"
-]
-
-[environments.stg]
-url = "${env.DATASOURCE_URL}"
-user = "${env.DATASOURCE_USERNAME}"
-password = "${env.DATASOURCE_PASSWORD}"
-
-[environments.stg.flyway]
-locations = [
-    "classpath:db/migration/schema",
-    "classpath:db/migration/data/stg"
+    "classpath:db/migration/data/${env.ENV}"
 ]

@@ -59,7 +59,7 @@ java -Dflyway.skipCheckForUpdate=true \
 )
 ```
 
-接続情報と環境別のマイグレーションパスは `config/flyway.toml` から読み込みます。
+接続情報と環境別のマイグレーションパスは `config/flyway.toml.example` から読み込みます。
 実行時に `DATASOURCE_URL`、`DATASOURCE_USERNAME`、`DATASOURCE_PASSWORD`、`FLYWAY_CONFIG_FILES`、`ENV` を環境変数として設定してください。
 `ENV` の値は `-environment` パラメータとしてFlywayへ渡されます。
 上記のローカル実行では、読みやすいコンソール形式でログを出力します。
