@@ -38,19 +38,22 @@ dependencies {
     // これらは flyway-core しか transitive に引かないため軽量。バージョンは flyway に追従。
     def flywayVersion = libs.versions.flyway.get()
     [
-        'flyway-command-mcp',
-        'flyway-command-test-connection',
-        'flyway-reports',
-        'flyway-verb-info',
-        'flyway-verb-migrate',
-        'flyway-verb-validate',
-        'flyway-verb-clean',
-        'flyway-verb-repair',
-        'flyway-verb-baseline',
-        'flyway-verb-schemas',
-        'flyway-nc-core',
-        'flyway-nc-scanners',
-        'flyway-nc-callbacks',
+            'flyway-core',
+            'flyway-command-mcp',
+            'flyway-command-test-connection',
+            'flyway-reports',
+            'flyway-verb-info',
+            'flyway-verb-migrate',
+            'flyway-verb-validate',
+            'flyway-verb-clean',
+            'flyway-verb-repair',
+            'flyway-verb-baseline',
+            'flyway-verb-schemas',
+            'flyway-nc-core',
+            'flyway-nc-scanners',
+            'flyway-nc-callbacks',
+            // 必要なDatabaseモジュール
+            'flyway-database-postgresql',
     ].each { module ->
         implementation "org.flywaydb:${module}:${flywayVersion}"
     }
@@ -61,10 +64,7 @@ dependencies {
     implementation libs.logback.classic
     implementation libs.logstash.logback.encoder
 
-    implementation libs.flyway.core
-
-    implementation libs.flyway.database.postgresql
-    implementation libs.postgresql
+    runtimeOnly libs.postgresql
 }
 
 shadowJar {

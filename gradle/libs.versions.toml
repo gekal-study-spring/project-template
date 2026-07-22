@@ -33,7 +33,7 @@ springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springd
 
 # Database and migration
 flyway-commandline = { group = "org.flywaydb", name = "flyway-commandline", version.ref = "flyway" }
-flyway-core = { group = "org.flywaydb", name = "flyway-core", version.ref = "flyway" }
+#flyway-core = { group = "org.flywaydb", name = "flyway-core", version.ref = "flyway" }
 flyway-database-postgresql = { group = "org.flywaydb", name = "flyway-database-postgresql", version.ref = "flyway" }
 postgresql = { group = "org.postgresql", name = "postgresql", version.ref = "postgresql" }
 
