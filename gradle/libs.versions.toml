@@ -1,9 +1,9 @@
 [versions]
 # Build tools
 dependency-management = "1.1.7"
-openrewrite = "7.30.0"
-shadow = "9.4.1"
-spotless = "8.4.0"
+openrewrite = "7.37.0"
+shadow = "9.6.1"
+spotless = "8.8.0"
 springframework-boot = "4.0.7"
 
 # Application
@@ -12,7 +12,7 @@ springdoc-openapi = "3.0.3"
 
 # Database and migration
 flyway = "12.4.0"
-postgresql = "42.7.11"
+postgresql = "42.7.13"
 
 # Console
 jansi = "2.4.3"
@@ -21,7 +21,7 @@ jansi = "2.4.3"
 logstash-logback-encoder = "9.0"
 
 # OpenRewrite
-rewrite-spring = "6.29.2"
+rewrite-spring = "6.35.0"
 
 [libraries]
 # Platforms
