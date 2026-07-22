@@ -32,6 +32,9 @@ ENV=stg ./gradlew migration:flywayMigrate
 - `migration:flywayClean`: データベースをクリーン（全テーブル削除）
 - `migration:flywayRepair`: チェックサムの不一致などを修復
 
+Gradle タスクは `config/flyway.toml` ではなく `migration/build.gradle` の `flyway` ブロックの設定を使用します。
+接続情報は `DATASOURCE_URL` / `DATASOURCE_USERNAME` / `DATASOURCE_PASSWORD` で上書きでき、未設定の場合は `compose.yaml` のローカル環境（`localhost:15432`）に接続します。
+
 ### 2. Shadow JAR を使用して実行する
 
 Docker 環境や CI/CD パイプラインなどで、Gradle がインストールされていない環境で使用します。
@@ -70,7 +73,6 @@ java -Dflyway.skipCheckForUpdate=true \
 環境の切り替えは `-environment` 引数でのみ可能です。**`FLYWAY_ENVIRONMENT` / `FLYWAY_DEFAULT_ENVIRONMENT` 環境変数はFlyway 12.4.0 OSSでは機能しません**（設定ファイルが読まれず `Unable to connect to the database` になります）。
 
 `locations` に `${env.XXX}` は書けません。envリゾルバは `environments` 名前空間のプロパティ（`url` / `user` / `password` 等）でのみ展開され、`flyway` 名前空間の `locations` では文字列のまま扱われるためです。環境別パスは環境ブロック内に直接記述してください。
-また、Flywayは拡張子が `.toml` のファイルのみTOMLとして解釈するため、`config/flyway.toml.example`（テンプレート）を `FLYWAY_CONFIG_FILES` に直接指定することはできません。
 上記のローカル実行では、読みやすいコンソール形式でログを出力します。
 DockerイメージはデフォルトでLogbackのLogstash形式を使用します。
 `compose.yaml`から実行する場合は、`FLYWAY_LOGGERS=console`で読みやすいコンソール形式へ上書きします。

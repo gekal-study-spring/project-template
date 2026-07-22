@@ -94,7 +94,10 @@ Spring Securityを使用したJWTによる認可を実装しています。
 `migration` モジュールで一元管理しています。
 
 - **新しいテーブルの追加**: `migration/src/main/resources/db/migration/schema/` に新しい SQL ファイルを追加します。
-- **初期データの追加**: `migration/src/main/resources/db/migration/data/dev/` に追加します。
+- **初期データの追加**: 環境別に `migration/src/main/resources/db/migration/data/dev/`、`data/stg/` に追加します。
+- **環境の切り替え**: 環境別の設定は `migration/config/flyway.toml` に `[environments.dev]` / `[environments.stg]` として定義されており、環境変数 `ENV` で切り替えます。
+
+詳細は [migration/README.md](migration/README.md) を参照してください。
 
 ### 耐障害性 (Resilience)
 `UserService` には `@Retryable` が設定されており、一時的なデータベース接続エラー時に自動的にリトライを行います。
