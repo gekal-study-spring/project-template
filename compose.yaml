@@ -26,7 +26,7 @@ services:
   migration:
     container_name: project-template-migration
     build:
-      dockerfile: Dockerfile-migration
+      dockerfile: migration/Dockerfile
       context: .
     environment:
       FLYWAY_CONFIG_FILES: /app/config/flyway.toml
@@ -42,7 +42,7 @@ services:
   app:
     container_name: project-template-app
     build:
-      dockerfile: Dockerfile-app
+      dockerfile: app/Dockerfile
       context: .
     environment:
       ENV: *env

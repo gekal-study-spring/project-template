@@ -17,10 +17,10 @@ jobs:
       matrix:
         include:
           - name: app
-            dockerfile: Dockerfile-app
+            dockerfile: app/Dockerfile
             image: project-template-app
           - name: migration
-            dockerfile: Dockerfile-migration
+            dockerfile: migration/Dockerfile
             image: project-template-migration
 
     steps:

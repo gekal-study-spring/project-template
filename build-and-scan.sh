@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # GitHub Actions(.github/workflows/container-image-scan.yml)と同じ内容をローカルで実行する。
-# Dockerfile-app / Dockerfile-migration をビルドし、Trivy でスキャンする。
+# app/Dockerfile / migration/Dockerfile をビルドし、Trivy でスキャンする。
 #
 # 使い方:
 #   ./build-and-scan.sh            # 両方のイメージを対象
@@ -18,8 +18,8 @@ cd "$(dirname "$0")"
 
 # ビルド対象の定義: <名前>:<Dockerfile>:<イメージ名>
 ALL_TARGETS=(
-  "app:Dockerfile-app:project-template-app"
-  "migration:Dockerfile-migration:project-template-migration"
+  "app:app/Dockerfile:project-template-app"
+  "migration:migration/Dockerfile:project-template-migration"
 )
 
 # 引数があれば対象を絞り込む

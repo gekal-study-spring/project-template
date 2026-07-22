@@ -2,7 +2,7 @@
 #   ENV=dev  -> [environments.dev]  を使用
 #   ENV=stg  -> [environments.stg]  を使用
 #
-# 切り替えは ENV の値を Flyway の -environment 引数へ渡すことで行う（README / Dockerfile-migration 参照）。
+# 切り替えは ENV の値を Flyway の -environment 引数へ渡すことで行う（README.md / Dockerfile 参照）。
 # FLYWAY_ENVIRONMENT 環境変数による指定は Flyway 12.4.0 OSS では機能しないため使用しないこと。
 #
 # 接続情報は environments 名前空間のプロパティなので "${env.XXX}" で環境変数を展開できる。

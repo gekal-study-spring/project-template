@@ -44,6 +44,7 @@
 ```text
 .
 ├── app/                 # メインアプリケーションモジュール
+│   ├── Dockerfile       # アプリケーション用Dockerfile
 │   ├── src/main/java/   # ソースコード
 │   │   └── cn/gekal/spring/template/
 │   │       ├── application/      # アプリケーション層（Service, Command/Query）
@@ -52,13 +53,13 @@
 │   │       └── presentation/     # プレゼンテーション層（API Controller, Request/Response）
 │   └── src/main/resources/       # 設定、MyBatis Mapper、JWT公開鍵
 ├── migration/           # データベースマイグレーションモジュール（Flyway）
+│   ├── Dockerfile       # マイグレーション用Dockerfile
+│   ├── config/flyway.toml        # Flyway設定（環境別ブロック）
 │   ├── src/main/resources/db/migration/
 │   │   ├── schema/               # テーブル定義スクリプト (DDL)
 │   │   └── data/                 # 環境別データ・テストデータ (DML)
 ├── database/            # データベース初期化用スクリプト・Dockerfile
 ├── compose.yaml         # Docker Compose設定
-├── Dockerfile-app       # アプリケーション用Dockerfile
-├── Dockerfile-migration # マイグレーション用Dockerfile
 ├── generate-jwt.sh      # テスト用JWT生成スクリプト
 ├── apis.rest            # VS Code REST Client用ファイル
 └── upgrade.md           # 更新履歴
