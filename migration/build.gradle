@@ -28,9 +28,33 @@ repositories {
 dependencies {
     implementation platform(libs.spring.boot.dependencies)
 
+    // flyway-commandline 本体は transitive=false で取り込み、Oracle/Snowflake/MSSQL 等の
+    // 不要な DB ドライバやクラウド SDK (合計約80依存) を排除して JAR を軽量に保つ。
     implementation(libs.flyway.commandline) {
         transitive = false
     }
+    // Flyway 13 で commandline が多数のモジュールに分割された。CLI が ServiceLoader で
+    // 参照するフレームワークモジュール (verb=各コマンド, nc=Native Connector, mcp) を明示的に追加する。
+    // これらは flyway-core しか transitive に引かないため軽量。バージョンは flyway に追従。
+    def flywayVersion = libs.versions.flyway.get()
+    [
+        'flyway-command-mcp',
+        'flyway-command-test-connection',
+        'flyway-reports',
+        'flyway-verb-info',
+        'flyway-verb-migrate',
+        'flyway-verb-validate',
+        'flyway-verb-clean',
+        'flyway-verb-repair',
+        'flyway-verb-baseline',
+        'flyway-verb-schemas',
+        'flyway-nc-core',
+        'flyway-nc-scanners',
+        'flyway-nc-callbacks',
+    ].each { module ->
+        implementation "org.flywaydb:${module}:${flywayVersion}"
+    }
+
     implementation libs.jansi
     implementation libs.jackson.dataformat.toml
     implementation libs.jackson.dataformat.xml
