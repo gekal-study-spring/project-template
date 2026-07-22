@@ -1,0 +1,108 @@
+version: 2
+
+updates:
+  # Gradle の依存関係
+  # 依存のバージョンは gradle/libs.versions.toml (バージョンカタログ) で一元管理しており、
+  # Dependabot はリポジトリ直下の gradle/libs.versions.toml のみを参照する。
+  # サブモジュールの build.gradle に直書きされた依存があっても拾えるよう directories に列挙している。
+  - package-ecosystem: gradle
+    directories:
+      - "/"
+      - "/app"
+      - "/migration"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Tokyo
+    open-pull-requests-limit: 10
+    labels:
+      - dependencies
+      - gradle
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      # Spring Boot と MyBatis はまとめて更新する
+      spring-stack:
+        patterns:
+          - "org.springframework.boot*"
+          - "org.mybatis.spring.boot*"
+        update-types:
+          - minor
+          - patch
+      # 上記以外のマイナー・パッチは1つのPRにまとめる
+      all-non-major:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "org.springframework.boot*"
+          - "org.mybatis.spring.boot*"
+        update-types:
+          - minor
+          - patch
+
+  # Dockerfile のベースイメージ
+  - package-ecosystem: docker
+    directories:
+      - "/app"
+      - "/migration"
+      - "/database"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Tokyo
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - docker
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      docker-non-major:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+
+  # compose.yaml で参照しているイメージ
+  - package-ecosystem: docker-compose
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Tokyo
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - docker
+    commit-message:
+      prefix: chore
+      include: scope
+
+  # GitHub Actions のワークフローで使用しているアクション
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+      time: "09:00"
+      timezone: Asia/Tokyo
+    open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - github-actions
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      actions-non-major:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
