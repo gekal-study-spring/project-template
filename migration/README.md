@@ -59,9 +59,18 @@ java -Dflyway.skipCheckForUpdate=true \
 )
 ```
 
-接続情報と環境別のマイグレーションパスは `config/flyway.toml.example` から読み込みます。
-実行時に `DATASOURCE_URL`、`DATASOURCE_USERNAME`、`DATASOURCE_PASSWORD`、`FLYWAY_CONFIG_FILES`、`ENV` を環境変数として設定してください。
-`ENV` の値は `-environment` パラメータとしてFlywayへ渡されます。
+環境別の設定（接続情報とマイグレーションパス）は `config/flyway.toml` に `[environments.dev]` / `[environments.stg]` として定義し、実行時に環境変数 `ENV` で切り替えます。
+
+| 環境変数 | 用途 |
+| --- | --- |
+| `ENV` | 使用する環境ブロックの選択。`-environment` パラメータとしてFlywayへ渡されます |
+| `DATASOURCE_URL` / `DATASOURCE_USERNAME` / `DATASOURCE_PASSWORD` | 接続情報。TOML内で `${env.XXX}` として展開されます |
+| `FLYWAY_CONFIG_FILES` | 設定ファイルのパス |
+
+環境の切り替えは `-environment` 引数でのみ可能です。**`FLYWAY_ENVIRONMENT` / `FLYWAY_DEFAULT_ENVIRONMENT` 環境変数はFlyway 12.4.0 OSSでは機能しません**（設定ファイルが読まれず `Unable to connect to the database` になります）。
+
+`locations` に `${env.XXX}` は書けません。envリゾルバは `environments` 名前空間のプロパティ（`url` / `user` / `password` 等）でのみ展開され、`flyway` 名前空間の `locations` では文字列のまま扱われるためです。環境別パスは環境ブロック内に直接記述してください。
+また、Flywayは拡張子が `.toml` のファイルのみTOMLとして解釈するため、`config/flyway.toml.example`（テンプレート）を `FLYWAY_CONFIG_FILES` に直接指定することはできません。
 上記のローカル実行では、読みやすいコンソール形式でログを出力します。
 DockerイメージはデフォルトでLogbackのLogstash形式を使用します。
 `compose.yaml`から実行する場合は、`FLYWAY_LOGGERS=console`で読みやすいコンソール形式へ上書きします。

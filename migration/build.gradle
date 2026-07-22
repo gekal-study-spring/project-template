@@ -56,10 +56,11 @@ shadowJar {
     }
 }
 
+// 環境別の情報はすべて環境変数で指定する（未設定時はローカル開発用のデフォルトを使用）
 flyway {
-    url = 'jdbc:postgresql://localhost:15432/template'
-    user = 'myuser'
-    password = 'secret'
+    url = System.getenv('DATASOURCE_URL') ?: 'jdbc:postgresql://localhost:15432/template'
+    user = System.getenv('DATASOURCE_USERNAME') ?: 'myuser'
+    password = System.getenv('DATASOURCE_PASSWORD') ?: 'secret'
     locations = [
             "classpath:db/migration/schema",
             "classpath:db/migration/data/${System.getenv('ENV') ?: 'dev'}"

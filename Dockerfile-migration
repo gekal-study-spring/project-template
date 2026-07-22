@@ -55,5 +55,7 @@ ENV ENV="dev"
 
 ENV FLYWAY_LOGGERS="slf4j"
 
+# ENV の値を -environment へ渡して flyway.toml の環境別ブロックを切り替える。
+# （FLYWAY_ENVIRONMENT 環境変数による指定は Flyway 12.4.0 OSS では機能しない）
 ENTRYPOINT ["sh", "-c", "exec java ${JAVA_OPTS} -jar /app/migration.jar -environment=\"${ENV}\" \"$@\"", "--"]
 CMD ["migrate"]
