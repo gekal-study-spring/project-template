@@ -6,7 +6,7 @@
 # -----------------------------------------------------------------------------
 # Stage 1: Build the application
 # -----------------------------------------------------------------------------
-FROM eclipse-temurin:21-jdk-noble AS builder
+FROM eclipse-temurin:25-jdk-noble AS builder
 
 WORKDIR /app
 
@@ -30,7 +30,7 @@ RUN --mount=type=cache,target=/root/.gradle ./gradlew app:bootJar --no-daemon
 # -----------------------------------------------------------------------------
 # Stage 2: Extract Layers
 # -----------------------------------------------------------------------------
-FROM eclipse-temurin:21-jdk-noble AS extractor
+FROM eclipse-temurin:25-jdk-noble AS extractor
 WORKDIR /builder
 
 COPY --from=builder /app/app/build/libs/*.jar application.jar
@@ -40,7 +40,7 @@ RUN java -Djarmode=tools -jar application.jar extract --layers --destination ext
 # -----------------------------------------------------------------------------
 # Stage 3: Runtime Image
 # -----------------------------------------------------------------------------
-FROM eclipse-temurin:21-jre-noble
+FROM eclipse-temurin:25-jre-noble
 
 # OSパッケージを最新化して攻撃対象領域を減らす
 # (Ubuntu 24.04 LTS(noble)ベース。rolling な無印タグと違い pebble を含まず、
