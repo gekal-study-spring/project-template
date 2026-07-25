@@ -11,3 +11,7 @@ apis:
 # Use `recommended` for stricter checks (requires summaries, security, etc.).
 extends:
   - minimal
+
+# Disable the preview's MCP server / "Connect to Cursor|VS Code" buttons.
+mcp:
+  hide: true

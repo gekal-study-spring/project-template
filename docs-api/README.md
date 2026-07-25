@@ -64,5 +64,5 @@ const albBaseUri = "https://alb.internal.example.com";
 | `aws.tsp` | AWS API Gateway VPC Link 統合拡張(augment デコレーター) |
 | `scripts/apigw-cors.mjs` | 生成後に CORS プリフライト OPTIONS を注入する後処理 |
 | `tspconfig.yaml` | TypeSpec エミッタ設定(OpenAPI 3.1 を `tsp-output/schema/` に出力) |
-| `redocly.yaml` | Redocly CLI の設定(API エイリアス・lint・Redoc 表示オプション) |
+| `redocly.yaml` | Redocly CLI の設定(API エイリアス・lint・MCP 無効化) |
 | `tsp-output/` | 生成物(gitignore 済み) |
