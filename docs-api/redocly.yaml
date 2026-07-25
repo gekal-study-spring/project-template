@@ -1,0 +1,19 @@
+# Redocly configuration
+# Docs: https://redocly.com/docs/cli/configuration
+#
+# `main` is the API served by `npm run preview` (Redoc live preview) and
+# linted by `npm run lint`.
+apis:
+  main:
+    root: tsp-output/schema/openapi.yaml
+
+# Lint ruleset applied by `npm run lint`.
+# Use `recommended` for stricter checks (requires summaries, security, etc.).
+extends:
+  - minimal
+
+# Redoc rendering options (v2 root-level keys).
+openapi:
+  hideDownloadButton: false
+  expandResponses: "200,201"
+  jsonSampleExpandLevel: 3

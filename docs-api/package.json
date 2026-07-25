@@ -3,12 +3,25 @@
   "version": "0.1.0",
   "type": "module",
   "private": true,
+  "scripts": {
+    "build": "tsp compile .",
+    "clean": "rm -rf tsp-output",
+    "watch:tsp": "tsp compile . --watch",
+    "preview": "redocly preview --product redoc --port 8080",
+    "dev": "npm run build && concurrently -n tsp,redoc -c blue,green \"npm:watch:tsp\" \"npm:preview\"",
+    "lint": "redocly lint main",
+    "build-docs": "redocly build-docs main -o tsp-output/redoc.html"
+  },
   "dependencies": {
     "@typespec/compiler": "^1.14.0",
     "@typespec/http": "^1.14.0",
-    "@typespec/rest": "^0.84.0",
     "@typespec/openapi": "^1.14.0",
-    "@typespec/openapi3": "^1.14.0"
+    "@typespec/openapi3": "^1.14.0",
+    "@typespec/rest": "^0.84.0"
   },
-  "packageManager": "npm@12.0.1+sha512.2f94fd8bf600416416a934bfc59c4991e8bff7372ef7d842784e2a8b8d48c81555ee645069ddea73625fb8e92dc261feab0188fd5dab6c22fefd46316f5f9140"
+  "packageManager": "npm@12.0.1+sha512.2f94fd8bf600416416a934bfc59c4991e8bff7372ef7d842784e2a8b8d48c81555ee645069ddea73625fb8e92dc261feab0188fd5dab6c22fefd46316f5f9140",
+  "devDependencies": {
+    "@redocly/cli": "^2.40.0",
+    "concurrently": "^10.0.4"
+  }
 }

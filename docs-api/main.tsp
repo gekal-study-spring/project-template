@@ -1,7 +1,13 @@
 import "@typespec/http";
+import "@typespec/openapi";
 
 using Http;
+using OpenAPI;
+
 @service(#{ title: "Widget Service" })
+@info(#{ version: "1.0.0" })
+@doc("Sample API defined with TypeSpec.")
+@server("http://localhost:8080", "Local development server")
 namespace DemoService;
 
 model Widget {
