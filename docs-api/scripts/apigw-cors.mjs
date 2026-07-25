@@ -33,9 +33,12 @@ const corsIntegration = {
 const doc = parse(readFileSync(file, "utf8"));
 let added = 0;
 
-for (const pathItem of Object.values(doc.paths ?? {})) {
+for (const [path, pathItem] of Object.entries(doc.paths ?? {})) {
   if (pathItem.options) continue; // don't clobber an existing OPTIONS
+  // e.g. "/api/users/{id}" -> "corsPreflight_api_users_id"
+  const operationId = "corsPreflight" + path.replace(/[/{}]+/g, "_").replace(/_+$/, "");
   pathItem.options = {
+    operationId,
     summary: "CORS Preflight",
     description: "API GatewayによるCORSプレフライトリクエストの自動応答",
     tags: ["CORS"],

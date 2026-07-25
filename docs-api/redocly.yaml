@@ -11,9 +11,3 @@ apis:
 # Use `recommended` for stricter checks (requires summaries, security, etc.).
 extends:
   - minimal
-
-# Redoc rendering options (v2 root-level keys).
-openapi:
-  hideDownloadButton: false
-  expandResponses: "200,201"
-  jsonSampleExpandLevel: 3
