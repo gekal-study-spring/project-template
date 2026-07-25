@@ -19,7 +19,7 @@ npm run dev
 ```
 
 - TypeSpec を watch モードでコンパイルし、同時に Redoc プレビューを起動します。
-- ブラウザで <http://localhost:8080> を開きます。
+- ブラウザで <http://localhost:8088> を開きます。
 - `main.tsp` を保存すると OpenAPI が再生成され、Redoc が自動でリロードします。
 
 > 初回起動時は `redocly preview` が `@redocly/redoc` を npx で取得するため

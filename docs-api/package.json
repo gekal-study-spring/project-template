@@ -8,7 +8,7 @@
     "apigw:cors": "node scripts/apigw-cors.mjs",
     "clean": "rm -rf tsp-output",
     "watch:tsp": "tsp compile . --watch",
-    "preview": "redocly preview --product redoc --port 8080",
+    "preview": "redocly preview --product redoc --port 8088",
     "dev": "npm run build && concurrently -n tsp,redoc -c blue,green \"npm:watch:tsp\" \"npm:preview\"",
     "lint": "redocly lint main",
     "build-docs": "redocly build-docs main -o tsp-output/redoc.html"
