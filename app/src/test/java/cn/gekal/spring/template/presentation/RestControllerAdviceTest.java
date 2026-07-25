@@ -51,7 +51,7 @@ class RestControllerAdviceTest {
   @Test
   void testGenericException_shouldReturnJsonResponse() throws Exception {
     mockMvc
-        .perform(get("/v3/api-docs"))
+        .perform(get("/unmapped-endpoint"))
         .andExpect(status().isNotFound())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.status").value(404))

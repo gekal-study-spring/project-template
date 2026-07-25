@@ -12,7 +12,7 @@
 - **Persistence**: MyBatis / PostgreSQL
 - **Migration**: Flyway (別モジュールとして分離)
 - **Resilience**: Spring Retry
-- **Documentation**: OpenAPI 3 / Swagger UI
+- **Documentation**: TypeSpec → OpenAPI 3 / Redoc (`docs-api/`)
 - **Container**: Docker, Docker Compose
 - **Quality**: Spotless (Google Java Format)
 
@@ -79,7 +79,7 @@ docker compose up --build
 ```
 
 - **APIベースURL**: `http://localhost:18080`
-- **Swagger UI**: `http://localhost:18080/swagger-ui.html`
+- **APIドキュメント**: `docs-api/` の TypeSpec から生成(`cd docs-api && npm run dev` → <http://localhost:8088>)
 - **Actuator**: `http://localhost:18080/actuator`
 - **DB接続**: `localhost:15432` (User: `myuser`, Password: `secret`, DB: `template`)
 
@@ -104,10 +104,12 @@ Spring Securityを使用したJWTによる認可を実装しています。
 `UserService` には `@Retryable` が設定されており、一時的なデータベース接続エラー時に自動的にリトライを行います。
 
 ### AWS API Gateway 統合
-本テンプレートは、AWS API Gateway との統合を容易にするための機能を備えています。
-- **OpenAPI Extensions**: `OpenApiConfig` により、Swagger UI (v3/api-docs) からエクスポートされる OpenAPI 定義に `x-amazon-apigateway-integration` 拡張が自動的に付与されます。
-- **CORS プレフライト**: API Gateway 側での CORS 処理を自動化するための Mock 統合設定も OpenAPI 定義に含まれます。
-- **設定項目**: `application.yaml` の `aws.apigateway` セクションで VPC Link や ALB の情報を設定可能です。
+AWS API Gateway 用の OpenAPI 拡張は `docs-api/`(TypeSpec)で定義しています。
+- **OpenAPI Extensions**: `docs-api/aws.tsp` により、各オペレーションに `x-amazon-apigateway-integration`(VPC Link)拡張を付与します。
+- **CORS プレフライト**: `docs-api/scripts/apigw-cors.mjs` が、ビルド時に各パスへ Mock 統合の OPTIONS を注入します。
+- **設定項目**: `docs-api/aws.tsp` の `vpcLinkId` / `albBaseUri` 定数で VPC Link や ALB の情報を設定します。
+
+詳細は [docs-api/README.md](docs-api/README.md) を参照してください。
 
 ### コード規約
 Gradleの `Spotless` プラグインを使用しています。コミット前にフォーマットを確認してください。

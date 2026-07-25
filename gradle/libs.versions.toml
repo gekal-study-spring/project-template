@@ -8,7 +8,6 @@ springframework-boot = "4.1.0"
 
 # Application
 mybatis = "4.1.0"
-springdoc-openapi = "3.0.3"
 
 # Database and migration
 flyway = "13.0.0"
@@ -29,7 +28,6 @@ spring-boot-dependencies = { group = "org.springframework.boot", name = "spring-
 
 # Application
 mybatis-spring-boot-starter = { group = "org.mybatis.spring.boot", name = "mybatis-spring-boot-starter", version.ref = "mybatis" }
-springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-openapi" }
 
 # Database and migration
 flyway-commandline = { group = "org.flywaydb", name = "flyway-commandline", version.ref = "flyway" }

@@ -1,6 +1,5 @@
 package cn.gekal.spring.template.presentation;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -8,28 +7,20 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-@Schema(description = "共通エラーレスポンス (RFC 7807 準拠)")
 public class ErrorResponse {
 
-  @Schema(description = "エラーのタイプを識別するURI", example = "about:blank")
   private URI type;
 
-  @Schema(description = "エラーの種類（RFC 7807準拠のタイトル）", example = "Bad Request")
   private String title;
 
-  @Schema(description = "HTTPステータスコード", example = "400")
   private int status;
 
-  @Schema(description = "詳細なエラーメッセージ", example = "Validation failed")
   private String detail;
 
-  @Schema(description = "リクエストパス", example = "/api/users")
   private String instance;
 
-  @Schema(description = "エラー発生日時", example = "2023-01-01T00:00:00")
   private LocalDateTime timestamp;
 
-  @Schema(description = "フィールドごとの詳細なバリデーションエラー")
   private List<FieldErrorDetail> errors;
 
   public ErrorResponse() {
@@ -128,8 +119,5 @@ public class ErrorResponse {
     this.errors = errors;
   }
 
-  @Schema(description = "フィールドごとのエラー詳細")
-  public record FieldErrorDetail(
-      @Schema(description = "フィールド名", example = "email") String field,
-      @Schema(description = "エラーメッセージ", example = "不正な形式のメールアドレスです") String message) {}
+  public record FieldErrorDetail(String field, String message) {}
 }

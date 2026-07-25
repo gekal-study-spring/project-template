@@ -42,9 +42,6 @@ dependencies {
 
     implementation libs.mybatis.spring.boot.starter
 
-    compileOnly libs.springdoc.openapi.starter.webmvc.ui
-    developmentOnly libs.springdoc.openapi.starter.webmvc.ui
-
     runtimeOnly 'org.postgresql:postgresql'
 
     rewrite libs.rewrite.spring
