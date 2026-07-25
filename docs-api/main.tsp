@@ -7,10 +7,20 @@ using OpenAPI;
 
 @service(#{ title: "User API" })
 @info(#{ version: "1.0.0" })
-@doc("ユーザーに関する操作を提供します。認証は JWT (Bearer) を使用します。")
+@doc("ユーザーに関する操作を提供します。認証は RS256 で署名された JWT を使用します。")
 @server("http://localhost:8080", "Local development server")
-@useAuth(BearerAuth)
+@useAuth(JwtAuth)
 namespace UserService;
+
+/**
+ * OAuth2 リソースサーバー (Spring Security) が検証する JWT。
+ * RS256 で署名し `Authorization: Bearer <token>` で送信します。
+ * 権限は `scope` クレーム (スペース区切り、例: `users::read users::create`) で表現します。
+ */
+model JwtAuth {
+  type: AuthType.http;
+  scheme: "bearer";
+}
 
 // ---------------------------------------------------------------------------
 // Models
