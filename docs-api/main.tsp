@@ -1,5 +1,6 @@
 import "@typespec/http";
 import "@typespec/openapi";
+import "./aws.tsp";
 
 using Http;
 using OpenAPI;

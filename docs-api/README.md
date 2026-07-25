@@ -36,11 +36,33 @@ npm run dev
 | `npm run build-docs` | 静的な Redoc HTML を `tsp-output/redoc.html` に出力 |
 | `npm run clean` | `tsp-output/` を削除 |
 
+## AWS API Gateway 連携
+
+生成した OpenAPI は AWS API Gateway へのインポートを想定し、拡張を付与しています
+(app の `OpenApiConfig#albIntegrationCustomizer` と同等)。
+
+- **VPC Link 統合** (`x-amazon-apigateway-integration`): `aws.tsp` で各オペレーションに
+  augment デコレーターで付与しています。TypeSpec ネイティブなので watch でも即反映されます。
+- **CORS プリフライト** (OPTIONS + mock 統合): TypeSpec は OPTIONS を表現できないため、
+  `npm run build` の後処理 (`scripts/apigw-cors.mjs`) で各パスに注入します。
+
+環境依存の値は `aws.tsp` の定数を編集するか、デプロイ時に差し替えてください。
+
+```tsp
+const vpcLinkId = "<vpc-link-id>";
+const albBaseUri = "https://alb.internal.example.com";
+```
+
+> `npm run dev`(watch)中は CORS 後処理は走りません。API Gateway 用の完成版を得るには
+> `npm run build`(compile + CORS 注入)を実行してください。
+
 ## ファイル構成
 
 | ファイル | 役割 |
 | --- | --- |
 | `main.tsp` | API 定義(エントリポイント) |
+| `aws.tsp` | AWS API Gateway VPC Link 統合拡張(augment デコレーター) |
+| `scripts/apigw-cors.mjs` | 生成後に CORS プリフライト OPTIONS を注入する後処理 |
 | `tspconfig.yaml` | TypeSpec エミッタ設定(OpenAPI 3.1 を `tsp-output/schema/` に出力) |
 | `redocly.yaml` | Redocly CLI の設定(API エイリアス・lint・Redoc 表示オプション) |
 | `tsp-output/` | 生成物(gitignore 済み) |

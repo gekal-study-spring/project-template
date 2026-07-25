@@ -4,7 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "tsp compile .",
+    "build": "tsp compile . && npm run apigw:cors",
+    "apigw:cors": "node scripts/apigw-cors.mjs",
     "clean": "rm -rf tsp-output",
     "watch:tsp": "tsp compile . --watch",
     "preview": "redocly preview --product redoc --port 8080",
