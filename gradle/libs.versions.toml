@@ -1,7 +1,8 @@
 [versions]
 # Build tools
 dependency-management = "1.1.7"
-openrewrite = "7.41.0"
+# 7.40.0 / 7.41.0 は rewrite-bom:8.91.0 を要求するが、その BOM が未公開のため解決不可。7.39.0 に固定する。
+openrewrite = "7.39.0"
 shadow = "9.6.1"
 spotless = "8.10.1"
 springframework-boot = "4.1.1"
