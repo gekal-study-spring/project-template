@@ -11,6 +11,14 @@ springframework-boot = "4.1.1"
 # Application
 mybatis = "4.1.0"
 
+# Security overrides
+# Spring Boot 4.1.1 の BOM が指定するバージョンに HIGH/CRITICAL の脆弱性があるため、
+# 修正版に上書きする。Spring Boot 側が追いついたらこの上書きを削除する。
+# tomcat 11.0.24: CVE-2026-65182 / CVE-2026-65905 / CVE-2026-68525
+tomcat = "11.0.26"
+# jackson 3.1.5: CVE-2026-68497 / CVE-2026-91776 / CVE-2026-91777
+jackson = "3.1.7"
+
 # Database and migration
 flyway = "13.8.0"
 postgresql = "42.7.13"
