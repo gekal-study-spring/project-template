@@ -22,6 +22,11 @@ updates:
     commit-message:
       prefix: chore
       include: scope
+    ignore:
+      # OpenRewrite 7.40.0 以降は rewrite-bom:8.91.0 を要求するが、その BOM が
+      # Maven Central に未公開でビルドが解決できないため更新対象から除外する。
+      # BOM が公開されたらこの ignore を削除する。
+      - dependency-name: "org.openrewrite.rewrite"
     groups:
       # Spring Boot と MyBatis はまとめて更新する
       spring-stack:

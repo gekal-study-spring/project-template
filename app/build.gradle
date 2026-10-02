@@ -20,6 +20,11 @@ configurations {
     }
 }
 
+// Spring Boot の BOM が指定するバージョンに脆弱性があるものを修正版に上書きする
+// (バージョンは gradle/libs.versions.toml の Security overrides を参照)
+ext['tomcat.version'] = libs.versions.tomcat.get()
+ext['jackson-bom.version'] = libs.versions.jackson.get()
+
 repositories {
     mavenCentral()
 }

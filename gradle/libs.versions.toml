@@ -1,17 +1,26 @@
 [versions]
 # Build tools
 dependency-management = "1.1.7"
-# 7.40.0 / 7.41.0 は rewrite-bom:8.91.0 を要求するが、その BOM が未公開のため解決不可。7.39.0 に固定する。
+# 7.40.0 以降は rewrite-bom:8.91.0 を要求するが、その BOM が Maven Central に未公開のため解決不可。
+# 7.39.0 に固定し、Dependabot の更新対象からも除外している (.github/dependabot.yml)。
 openrewrite = "7.39.0"
 shadow = "9.6.1"
-spotless = "8.10.1"
+spotless = "8.10.2"
 springframework-boot = "4.1.1"
 
 # Application
 mybatis = "4.1.0"
 
+# Security overrides
+# Spring Boot 4.1.1 の BOM が指定するバージョンに HIGH/CRITICAL の脆弱性があるため、
+# 修正版に上書きする。Spring Boot 側が追いついたらこの上書きを削除する。
+# tomcat 11.0.24: CVE-2026-65182 / CVE-2026-65905 / CVE-2026-68525
+tomcat = "11.0.26"
+# jackson 3.1.5: CVE-2026-68497 / CVE-2026-91776 / CVE-2026-91777
+jackson = "3.1.7"
+
 # Database and migration
-flyway = "13.5.0"
+flyway = "13.8.0"
 postgresql = "42.7.13"
 
 # Console
