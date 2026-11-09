@@ -58,13 +58,12 @@ class UserApiTest {
     // Initialize ObjectMapper
     objectMapper =
         JsonMapper.builder()
-            .changeDefaultVisibility(
-                visibilityChecker ->
-                    visibilityChecker
-                        .withVisibility(PropertyAccessor.FIELD, ANY)
-                        .withVisibility(PropertyAccessor.GETTER, NONE)
-                        .withVisibility(PropertyAccessor.SETTER, NONE)
-                        .withVisibility(PropertyAccessor.IS_GETTER, NONE))
+            .changeDefaultVisibility(visibilityChecker ->
+                visibilityChecker
+                    .withVisibility(PropertyAccessor.FIELD, ANY)
+                    .withVisibility(PropertyAccessor.GETTER, NONE)
+                    .withVisibility(PropertyAccessor.SETTER, NONE)
+                    .withVisibility(PropertyAccessor.IS_GETTER, NONE))
             .build();
 
     // Initialize test data
