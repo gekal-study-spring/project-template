@@ -48,9 +48,8 @@ public class GlobalExceptionHandler {
       MethodArgumentNotValidException ex, HttpServletRequest request) {
     List<ErrorResponse.FieldErrorDetail> errors =
         ex.getBindingResult().getFieldErrors().stream()
-            .map(
-                error ->
-                    new ErrorResponse.FieldErrorDetail(error.getField(), error.getDefaultMessage()))
+            .map(error ->
+                new ErrorResponse.FieldErrorDetail(error.getField(), error.getDefaultMessage()))
             .toList();
 
     log.error("Validation error: {}", errors);
@@ -62,14 +61,13 @@ public class GlobalExceptionHandler {
       HandlerMethodValidationException ex, HttpServletRequest request) {
     List<ErrorResponse.FieldErrorDetail> errors =
         ex.getAllErrors().stream()
-            .map(
-                error -> {
-                  if (error instanceof FieldError fieldError) {
-                    return new ErrorResponse.FieldErrorDetail(
-                        fieldError.getField(), fieldError.getDefaultMessage());
-                  }
-                  return new ErrorResponse.FieldErrorDetail(null, error.getDefaultMessage());
-                })
+            .map(error -> {
+              if (error instanceof FieldError fieldError) {
+                return new ErrorResponse.FieldErrorDetail(
+                    fieldError.getField(), fieldError.getDefaultMessage());
+              }
+              return new ErrorResponse.FieldErrorDetail(null, error.getDefaultMessage());
+            })
             .toList();
 
     log.error("Validation error: {}", errors);
